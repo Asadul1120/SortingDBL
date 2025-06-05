@@ -5,6 +5,7 @@ import NotFound from "../components/NotFound";
 import AddPerson from "../pages/AddPerson";
 import DutyUpdate from "../pages/DutyUpdate";
 import Employers from "../pages/Employers";
+import EmployDetails from "../pages/EmployDetails";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
       {
         path: "/employers",
         element: <Employers />,
+      },
+      {
+        path: "/employers/:id",
+        element: <EmployDetails/>,
       },
       {
         path: "/dutyUpdate",
