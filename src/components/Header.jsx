@@ -71,6 +71,15 @@ const Header = () => {
             </li>
             <li>
               <Link
+                to="/employers"
+                onClick={toggleMobileMenu}
+                className="hover:text-blue-400 border-b border-gray-600 block"
+              >
+                Employers
+              </Link>
+            </li>
+            <li>
+              <Link
                 to="#schedule"
                 onClick={toggleMobileMenu}
                 className="hover:text-blue-400 border-b border-gray-600 block"
