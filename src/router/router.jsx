@@ -6,6 +6,10 @@ import AddPerson from "../pages/AddPerson";
 import DutyUpdate from "../pages/DutyUpdate";
 import Employers from "../pages/Employers";
 import EmployDetails from "../pages/EmployDetails";
+import SignUp from "../pages/SignUp";
+import Login from "../pages/Login";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 
 const router = createBrowserRouter([
   {
@@ -20,7 +24,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/addPerson",
-        element: <AddPerson />,
+        element: (
+          <AdminRoute>
+            <AddPerson />
+          </AdminRoute>
+        ),
       },
       {
         path: "/employers",
@@ -28,11 +36,24 @@ const router = createBrowserRouter([
       },
       {
         path: "/employers/:id",
-        element: <EmployDetails/>,
+        element: <EmployDetails />,
       },
+
       {
         path: "/dutyUpdate",
-        element: <DutyUpdate />,
+        element: (
+          <AdminRoute>
+            <DutyUpdate />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/signUp",
+        element: <SignUp />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
       },
       {
         path: "*",
