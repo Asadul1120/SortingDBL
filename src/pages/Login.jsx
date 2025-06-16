@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import { useAuth } from "../AuthContext.jsx";
 
 
@@ -126,9 +126,12 @@ function Login() {
 
         <p className="text-sm text-center text-gray-400 mt-4">
           Don't have an account?{" "}
-          <a href="/signUp" className="text-blue-400 hover:underline">
-            Sign up
-          </a>
+          <Link
+            to="/signUp"
+            className="text-blue-500 hover:text-blue-600 transition duration-300"
+          >
+            Sign Up
+          </Link>
         </p>
       </form>
     </div>
