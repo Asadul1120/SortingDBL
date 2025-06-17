@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 function Employers() {
   const [employers, setEmployers] = useState([]);
   const [editingId, setEditingId] = useState(null);
   const [editedData, setEditedData] = useState({});
   const [searchId, setSearchId] = useState("");
+  // role bace work
+  const { auth } = useAuth();
+  const { user } = auth;
+ 
+  
 
   useEffect(() => {
     fetch("https://dblsorting.onrender.com/employers")
@@ -18,6 +24,11 @@ function Employers() {
   }, []);
 
   const handleDelete = (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this employer?"
+    );
+    if (!confirmDelete) return;
+
     fetch(`https://dblsorting.onrender.com/employers/${id}`, {
       method: "DELETE",
     })
@@ -27,6 +38,7 @@ function Employers() {
       })
       .catch((error) => console.error(error));
   };
+  
 
   const handleEditClick = (employer) => {
     setEditingId(employer._id);
@@ -71,7 +83,7 @@ function Employers() {
     <div className="min-h-screen bg-gray-900 text-white p-4 pt-20">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-8">All Employers</h1>
-       
+
         <input
           type="text"
           placeholder="Search by ID or Name"
@@ -79,7 +91,10 @@ function Employers() {
           onChange={(e) => setSearchId(e.target.value)}
           className="bg-gray-700 text-white p-2 rounded mb-6 w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-         <h4 className=" text-gray-400 mb-4 text-xl font-semibold"> Total employers: {employers.length}</h4>
+        <h4 className=" text-gray-400 mb-4 text-xl font-semibold">
+          {" "}
+          Total employers: {employers.length}
+        </h4>
 
         {employers.length === 0 ? (
           <div className="text-center text-gray-400">
@@ -145,18 +160,22 @@ function Employers() {
                       >
                         Details
                       </Link>
-                      <button
-                        onClick={() => handleEditClick(employer)}
-                        className="bg-blue-500 hover:bg-blue-600 py-2 px-4 rounded font-medium"
-                      >
-                        Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(employer._id)}
-                        className="bg-red-500 hover:bg-red-600 py-2 px-4 rounded font-medium"
-                      >
-                        Delete
-                      </button>
+                      {user?.role === "admin" && (
+                        <>
+                          <button
+                            onClick={() => handleEditClick(employer)}
+                            className="bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded font-medium"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(employer._id)}
+                            className="bg-red-600 hover:bg-red-700 py-2 px-4 rounded font-medium"
+                          >
+                            Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                   </>
                 )}
