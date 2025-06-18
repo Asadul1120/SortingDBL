@@ -9,9 +9,24 @@ const DutyUpdate = () => {
   const [otValues, setOtValues] = useState({});
   const [error, setError] = useState(null);
 
-  const formattedDate = new Date()
-    .toLocaleDateString("en-GB")
-    .replace(/\//g, "-");
+const today = new Date();
+const now = new Date();
+
+// সময় যদি 6টার আগে হয় (মানে এখনো আগের দিনের ডিউটি চলছে)
+if (now.getHours() < 6) {
+  // আগের দিন সেট করো
+  today.setDate(today.getDate() - 1);
+}
+
+let year = today.getFullYear();
+let month = today.getMonth() + 1;
+let date = today.getDate();
+
+if (month < 10) month = "0" + month;
+if (date < 10) date = "0" + date;
+
+const formattedDate = `${date}-${month}-${year}`;
+  
 
   useEffect(() => {
     const fetchData = async () => {
