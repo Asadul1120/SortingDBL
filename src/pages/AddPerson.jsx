@@ -12,25 +12,25 @@ export default function AddPerson() {
       line: formData.get("line"),
       group: formData.get("group"),
     };
-    console.log(data);
+    
 
-    // try {
-    //   const response = await fetch(
-    //     "https://dblsorting.onrender.com/employers",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(data),
-    //     }
-    //   );
-    //   if (!response.ok) throw new Error("Failed to add employee");
-    //   alert("✅ Employee added successfully!");
-    // } catch (error) {
-    //   console.error(error);
-    //   alert(error.message);
-    // }
+    try {
+      const response = await fetch(
+        "https://dblsorting.onrender.com/employers",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      if (!response.ok) throw new Error("Failed to add employee");
+      alert("✅ Employee added successfully!");
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   };
 
   return (
