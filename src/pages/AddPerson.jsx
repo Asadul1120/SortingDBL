@@ -7,25 +7,30 @@ export default function AddPerson() {
     const data = {
       name: formData.get("name"),
       ID: formData.get("ID"),
+      designation: formData.get("designation"),
       phone: formData.get("phone"),
       line: formData.get("line"),
       group: formData.get("group"),
     };
+    console.log(data);
 
-    try {
-      const response = await fetch("https://dblsorting.onrender.com/employers", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-     if (!response.ok) throw new Error("Failed to add employee");
-      alert("✅ Employee added successfully!");
-    } catch (error) {
-      console.error(error);
-      alert( error.message);
-    }        
+    // try {
+    //   const response = await fetch(
+    //     "https://dblsorting.onrender.com/employers",
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(data),
+    //     }
+    //   );
+    //   if (!response.ok) throw new Error("Failed to add employee");
+    //   alert("✅ Employee added successfully!");
+    // } catch (error) {
+    //   console.error(error);
+    //   alert(error.message);
+    // }
   };
 
   return (
@@ -53,6 +58,7 @@ export default function AddPerson() {
             <option value="7">Line 7</option>
             <option value="8">Line 8</option>
             <option value="9">Line 9</option>
+            <option value="operator">Operator</option>
           </select>
         </div>
 
@@ -67,6 +73,7 @@ export default function AddPerson() {
           >
             <option value="A">Group A</option>
             <option value="B">Group B</option>
+            <option value="C">Group C</option>
           </select>
         </div>
 
@@ -94,6 +101,23 @@ export default function AddPerson() {
             required
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
+        </div>
+        <div>
+          <label
+            htmlFor="designation"
+            className="block text-sm font-medium mb-1"
+          >
+            designation:
+          </label>
+          <select
+            name="designation"
+            id="designation"
+            className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="helper">Helper</option>
+            <option value="sorter">Sorter</option>
+            <option value="operator">Operator</option>
+          </select>
         </div>
 
         <div>

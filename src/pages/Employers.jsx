@@ -88,7 +88,7 @@ function Employers() {
           type="text"
           placeholder="Search by ID or Name"
           value={searchId}
-          onChange={(e) => setSearchId(e.target.value)}
+          onChange={(e) => setSearchId(e.target.value.trim())}
           className="bg-gray-700 text-white p-2 rounded mb-6 w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <h4 className=" text-gray-400 mb-4 text-xl font-semibold">

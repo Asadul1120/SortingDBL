@@ -8,11 +8,25 @@ const DutyUpdate = () => {
   const [shiftValues, setShiftValues] = useState({});
   const [otValues, setOtValues] = useState({});
   const [error, setError] = useState(null);
- 
-  const formattedDate = new Date()
-  .toLocaleDateString("en-GB")
-  .replace(/\//g, "-");
-  
+
+  const now = new Date();
+  const currentHour = now.getHours();
+
+  // ✅ যদি সময় 6:00am এর আগে হয় → আগের দিন
+  let customToday = new Date(now);
+  if (currentHour < 6) {
+    customToday.setDate(customToday.getDate() - 1);
+  }
+
+  const year = customToday.getFullYear();
+  let month = customToday.getMonth() + 1;
+  let date = customToday.getDate();
+
+  if (month < 10) month = "0" + month;
+  if (date < 10) date = "0" + date;
+
+  const formattedDate = `${date}-${month}-${year}`;
+  console.log(formattedDate);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,7 +85,7 @@ const DutyUpdate = () => {
 
       {/* Line Filter */}
       <div className="flex flex-col  sm:flex-row items-center justify-between gap-4 mb-8">
-        <div >
+        <div>
           <label htmlFor="lineFilter" className="text-lg font-medium">
             Filter by Line:
           </label>
@@ -101,7 +115,6 @@ const DutyUpdate = () => {
           otValues={otValues}
           onInputChange={handleInputChange}
           onAddClick={handleAddClick}
-          
         />
       ) : (
         <div className="text-center mt-20">
