@@ -4,6 +4,8 @@ export default function AddPerson() {
 
     const formData = new FormData(event.target);
 
+
+
     const data = {
       name: formData.get("name"),
       ID: formData.get("ID"),
@@ -11,6 +13,7 @@ export default function AddPerson() {
       phone: formData.get("phone"),
       line: formData.get("line"),
       group: formData.get("group"),
+      
     };
     
 
