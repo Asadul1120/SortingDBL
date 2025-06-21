@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
-
 import TableComponent from "../components/TableComponent";
 
 function HomePage() {
@@ -18,18 +17,18 @@ function HomePage() {
   // 📦 Fetch today's employers
   useEffect(() => {
     fetch("https://dblsorting.onrender.com/employers/today")
-  .then((res) => {
-    console.log("Response status:", res.status);
-    return res.json();
-  })
-  .then((data) => {
-    console.log("Fetched data:", data);
-    setUsers(Array.isArray(data) ? data : []);
-  })
-  .catch((err) => {
-    console.error("API fetch error:", err);
-    setUsers([]);
-  });
+      .then((res) => {
+        console.log("Response status:", res.status);
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Fetched data:", data);
+        setUsers(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => {
+        console.error("API fetch error:", err);
+        setUsers([]);
+      });
   }, []);
 
   // 📅 Custom formatted date
@@ -53,23 +52,18 @@ function HomePage() {
       return;
     }
 
-    // Create a new workbook
     const wb = XLSX.utils.book_new();
 
-    // Create the worksheet data structure based on your template
     const wsData = [
-      [], // Empty row
-      [], // Empty row
-      [], // Empty row
-      ["", "", "", "", "", "", "DBL CERAMICS LTD", ""], // Company name
-      ["", "", "", "", "", "", "A Concern Of DBL Group"],
-      ["", "", "", "", "", "", "Dhanua (Nayanpur),Sreepur,Gazipur"],
+      [],
+      [],
+      [],
+      ["", "", "", "", "", "", "      DBL CERAMICS LTD", ""],
+      ["", "", "", "", "", "", "   A Concern Of DBL Group  "],
+      ["", "", "", "", "", "", " Dhanua (Nayanpur),Sreepur,Gazipur"],
       ["", "", "", "", "", "", "Pre-Approval For Over Time (O.T)"],
-      [], // Empty row
+      [],
       [
-        "",
-        "",
-        "",
         "",
         "",
         "",
@@ -85,7 +79,8 @@ function HomePage() {
       [
         "",
         "",
-        "Department :",
+        "Department : ",
+        "",
         "",
         "",
         "",
@@ -94,73 +89,122 @@ function HomePage() {
         "Section :- Sorting & packing",
       ],
       [
-        "S.L No",
-        "Name",
-        "ID-No",
+        "S.L No  ",
+        " Name",
+        "ID-No ",
         "Designation",
-        "Date Of OT",
-
+        " Date Of OT",
         "Roster Duty",
         "",
-        "Requisted OT Hours",
+        "  Requisted OT Hours ",
         "",
         "",
         "Reason for requested OT",
       ],
-      ["", "", "", "", "", "Shift", "Duty Hours", "From", "To", "Total Hrs"],
+      [
+        "",
+        "",
+        "",
+        "",
+        "",
+        " Shift ",
+        " Duty Hours ",
+        "   From  ",
+        " To  ",
+        " Total Hrs ",
+      ],
     ];
 
     // Add employee data rows
     users.forEach((user, index) => {
       wsData.push([
-        index + 1, // S.L No
-        user.name, // Name
-        user.ID, // ID-No
-        user.designation || "", // Designation
-        "", // Date Of OT
-        user.shift || "", // Roster Duty - Shift
-        "", // Duty Hours (empty as it's formula-based in template)
-        "", // From (empty as it's formula-based in template)
-        "", // To (empty as it's formula-based in template)
-        user.OT || "", // Total Hrs (empty as it's formula-based in template)
-        "", // Empty for Reason
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        "", // Empty
-        user.shift || "", // Shift reference (column AD)
-        "", // From time (column AE)
-        "", // To time (column AF)
-        "", // Total hours (column AG)
-        "", // Empty (column AH)
+        index + 1,
+        user.name,
+        user.ID,
+        user.designation || "",
+        getFormattedDate(currentTime),
+        user.shift || "",
+        "",
+        "",
+        "",
+        user.OT || "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        user.shift || "",
+        "",
+        "",
+        "",
+        "",
       ]);
     });
 
-    // Add empty rows at the end
-    for (let i = 0; i < 20; i++) {
-      wsData.push([]);
-    }
+    // Add 20 blank rows at the end
+    for (let i = 0; i < 20; i++) wsData.push([]);
 
-    // Create worksheet from the data
+    // Create worksheet
     const ws = XLSX.utils.aoa_to_sheet(wsData);
 
-    // Add the worksheet to the workbook
+    // ✅ Set column widths
+    ws["!cols"] = [
+      { wch: 8 }, // S.L No
+      { wch: 15 }, // Name
+      { wch: 15 }, // ID-No
+      { wch: 15 }, // Designation
+      { wch: 15 }, // Date Of OT
+      { wch: 12 }, // Shift
+      { wch: 15 }, // Duty Hours
+      { wch: 10 }, // From
+      { wch: 10 }, // To
+      { wch: 12 }, // Total Hrs
+      { wch: 30 }, // Reason
+    ];
+
+    // ✅ Set row heights (especially for header rows 11 & 12 → index 11 & 12)
+    const totalRows = wsData.length;
+    ws["!rows"] = Array(totalRows).fill({ hpt: 20 }); // default height
+
+    ws["!rows"][8] = { hpt: 30 };
+    ws["!rows"][9] = { hpt: 30 }; // header row 1
+    ws["!rows"][10] = { hpt: 30 }; // header row 2
+
+    // ✅ Apply styles (center align & bold header)
+    const range = XLSX.utils.decode_range(ws["!ref"]);
+    for (let R = range.s.r; R <= range.e.r; ++R) {
+      for (let C = range.s.c; C <= range.e.c; ++C) {
+        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+        const cell = ws[cellRef];
+        if (cell && cell.v !== undefined) {
+          if (!cell.s) cell.s = {};
+          cell.s.alignment = {
+            vertical: "center",
+            horizontal: "center",
+            wrapText: true,
+          };
+          if (R === 13 || R === 14) {
+            cell.s.font = { bold: true };
+          }
+        }
+      }
+    }
+
+    // ✅ Add worksheet to workbook and export
     XLSX.utils.book_append_sheet(wb, ws, "OT-Sorting Packing");
 
-    // Generate the Excel file
     XLSX.writeFile(
       wb,
       `OT_sorting_packing_${getFormattedDate(currentTime).replace(
@@ -170,7 +214,6 @@ function HomePage() {
     );
   };
 
-  // 📊 Count logic
   const countByRole = (role) => users.filter((u) => u.role === role).length;
   const totalCount = users.length;
   const sorterCount = countByRole("Sorter");
@@ -238,7 +281,9 @@ function HomePage() {
         {users.length > 0 ? (
           <TableComponent employees={users} />
         ) : (
-          <p className="text-center text-lg font-medium mt-6">No data , please add data or refresh</p>
+          <p className="text-center text-lg font-medium mt-6">
+            No data , please add data or refresh
+          </p>
         )}
 
         <button
