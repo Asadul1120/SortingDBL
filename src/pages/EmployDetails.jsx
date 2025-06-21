@@ -83,7 +83,7 @@ function Details() {
         {/* ✅ ক্যালেন্ডার টেবিল */}
         <div className="overflow-x-auto mt-8">
           <p className="text-gray-400 mb-2">
-            Month: {monthNames[currentMonth - 1]} {currentYear}=
+            Month: {monthNames[currentMonth - 1]} {currentYear}
           </p>
           <table className="w-full text-center border border-gray-700">
             <thead className="bg-gray-700">

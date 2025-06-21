@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import * as XLSX from "xlsx";
+
 import TableComponent from "../components/TableComponent";
 
 function HomePage() {
@@ -17,11 +18,18 @@ function HomePage() {
   // 📦 Fetch today's employers
   useEffect(() => {
     fetch("https://dblsorting.onrender.com/employers/today")
-      .then((response) => response.json())
-      .then((data) => setUsers(data))
-      .catch((error) => {
-        console.error("Failed to fetch users:", error);
-      });
+  .then((res) => {
+    console.log("Response status:", res.status);
+    return res.json();
+  })
+  .then((data) => {
+    console.log("Fetched data:", data);
+    setUsers(Array.isArray(data) ? data : []);
+  })
+  .catch((err) => {
+    console.error("API fetch error:", err);
+    setUsers([]);
+  });
   }, []);
 
   // 📅 Custom formatted date
@@ -107,7 +115,7 @@ function HomePage() {
       wsData.push([
         index + 1, // S.L No
         user.name, // Name
-        user.id, // ID-No
+        user.ID, // ID-No
         user.designation || "", // Designation
         "", // Date Of OT
         user.shift || "", // Roster Duty - Shift
@@ -230,7 +238,7 @@ function HomePage() {
         {users.length > 0 ? (
           <TableComponent employees={users} />
         ) : (
-          <p className="text-center text-lg font-medium mt-6">Loading...</p>
+          <p className="text-center text-lg font-medium mt-6">No data , please add data or refresh</p>
         )}
 
         <button
