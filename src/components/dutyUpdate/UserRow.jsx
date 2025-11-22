@@ -20,7 +20,7 @@ const UserRow = ({
           value={shiftValue || ""}
           onChange={(e) => onInputChange(user._id, "shift", e.target.value)}
         >
-          {["None", "N", "D", "A", "B", "C"].map((shift) => (
+          {["None", "A/B","B/C","G", "N", "D", "A", "B", "C"].map((shift) => (
             <option key={shift} value={shift}>
               {shift}
             </option>
