@@ -32,7 +32,7 @@ function SignUp() {
       setErrors(newErrors);
     } else {
       // Send formData to backend here
-      await fetch("https://dblsorting.onrender.com/users/register", {
+      await fetch(`${import.meta.env.VITE_BASE_URL}/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

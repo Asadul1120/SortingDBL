@@ -6,7 +6,7 @@ function Details() {
   const [employer, setEmployer] = useState(null);
 
   useEffect(() => {
-    fetch(`https://dblsorting.onrender.com/employers/${id}`)
+    fetch(`${import.meta.env.VITE_BASE_URL}/today/${id}`)
       .then((res) => res.json())
       .then((data) => setEmployer(data))
       .catch((err) => console.error(err));
@@ -50,11 +50,13 @@ function Details() {
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);
 
   // ✅ শিফট ও OT সাজানো
+
   const shifts = [];
   const ots = [];
 
   for (let day = 1; day <= daysInMonth; day++) {
-    const dutyData = employer.duty.find((d) => {
+    // ✅ Optional chaining added
+    const dutyData = employer.duty?.find((d) => {
       const [dd, mm, yyyy] = d.date.split("-").map(Number);
       return yyyy === currentYear && mm === currentMonth && dd === day;
     });
@@ -77,7 +79,8 @@ function Details() {
           <span className="font-medium">Line:</span> {employer.line}
         </p>
         <p>
-          <span className="font-medium">Group:</span> {employer.group}
+          <span className="font-medium">Designation:</span>{" "}
+          {employer.Designation}
         </p>
 
         {/* ✅ ক্যালেন্ডার টেবিল */}

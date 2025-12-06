@@ -10,6 +10,7 @@ import SignUp from "../pages/SignUp";
 import Login from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import UsersPage from "../pages/UsersPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddPerson />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/admin",
+        element: (
+          <AdminRoute>
+            <UsersPage />
           </AdminRoute>
         ),
       },

@@ -16,14 +16,14 @@ function HomePage() {
 
   // 📦 Fetch today's employers
   useEffect(() => {
-    fetch("https://dblsorting.onrender.com/employers/today")
+    fetch(`${import.meta.env.VITE_BASE_URL}/today`)
       .then((res) => {
         console.log("Response status:", res.status);
         return res.json();
       })
       .then((data) => {
         console.log("Fetched data:", data);
-        setUsers(Array.isArray(data) ? data : []);
+        setUsers(Array.isArray(data.data) ? data.data : []);
       })
       .catch((err) => {
         console.error("API fetch error:", err);

@@ -4,32 +4,28 @@ export default function AddPerson() {
 
     const formData = new FormData(event.target);
 
-
-
     const data = {
       name: formData.get("name"),
       ID: formData.get("ID"),
-      designation: formData.get("designation"),
+      Designation: formData.get("designation"),
       phone: formData.get("phone"),
       line: formData.get("line"),
-      group: formData.get("group"),
-      
     };
-    
 
     try {
-      const response = await fetch(
-        "https://dblsorting.onrender.com/employers",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(data),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to add employee");
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/employers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.message || "Failed to add employee");
+      }
+
       alert("✅ Employee added successfully!");
+      event.target.reset();
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -66,21 +62,6 @@ export default function AddPerson() {
         </div>
 
         <div>
-          <label htmlFor="group" className="block text-sm font-medium mb-1">
-            Group:
-          </label>
-          <select
-            name="group"
-            id="group"
-            className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="A">Group A</option>
-            <option value="B">Group B</option>
-            <option value="C">Group C</option>
-          </select>
-        </div>
-
-        <div>
           <label htmlFor="name" className="block text-sm font-medium mb-1">
             Name:
           </label>
@@ -107,10 +88,10 @@ export default function AddPerson() {
         </div>
         <div>
           <label
-            htmlFor="designation"
+            htmlFor="Designation"
             className="block text-sm font-medium mb-1"
           >
-            designation:
+            Designation:
           </label>
           <select
             name="designation"

@@ -43,6 +43,7 @@
 // export default TableComponent;
 
 const TableComponent = ({ employees }) => {
+  
   return (
     <div className="overflow-x-auto mt-6">
       <table className="w-full table-auto border border-gray-700 rounded-lg shadow-md">

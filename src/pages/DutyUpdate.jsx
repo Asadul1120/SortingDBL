@@ -1,3 +1,6 @@
+
+
+
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserTable from "../components/dutyUpdate/UserTable";
@@ -12,7 +15,7 @@ const DutyUpdate = () => {
   const now = new Date();
   const currentHour = now.getHours();
 
-  // ✅ যদি সময় 6:00am এর আগে হয় → আগের দিন
+  // If time is before 6:00 AM → previous day
   let customToday = new Date(now);
   if (currentHour < 6) {
     customToday.setDate(customToday.getDate() - 1);
@@ -26,12 +29,11 @@ const DutyUpdate = () => {
   if (date < 10) date = "0" + date;
 
   const formattedDate = `${date}-${month}-${year}`;
-  console.log(formattedDate);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch("https://dblsorting.onrender.com/employers");
+        const res = await fetch(`${import.meta.env.VITE_BASE_URL}/employers`);
         if (!res.ok) throw new Error("Failed to fetch data");
         const result = await res.json();
         setData(result);
@@ -41,6 +43,7 @@ const DutyUpdate = () => {
         setError(error.message);
       }
     };
+
     fetchData();
   }, []);
 
@@ -50,22 +53,33 @@ const DutyUpdate = () => {
   };
 
   const handleAddClick = async (userId) => {
+    // ❗ Prevent: Must select a shift
+    if (!shiftValues[userId]) {
+      alert("⚠ Please select a shift before adding duty!");
+      return;
+    }
+
     const payload = {
+      employeeID: userId, // ✔ Correct field name
       date: formattedDate,
-      shift: shiftValues[userId] || "None",
+      shift: shiftValues[userId], // ✔ No invalid "None"
       OT: otValues[userId] || 0,
     };
 
     try {
-      const res = await fetch(
-        `https://dblsorting.onrender.com/employers/add-duty/${userId}`,
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
-        }
-      );
-      if (!res.ok) throw new Error("Failed to add duty");
+      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/duty/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await res.json();
+
+      if (!res.ok) {
+        alert("❌ " + result.message);
+        return;
+      }
+
       alert("✅ Duty added successfully!");
     } catch (error) {
       console.error(error);
@@ -84,7 +98,7 @@ const DutyUpdate = () => {
       <h1 className="text-4xl font-bold text-center mb-8">Duty Management</h1>
 
       {/* Line Filter */}
-      <div className="flex flex-col  sm:flex-row items-center justify-between gap-4 mb-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
         <div>
           <label htmlFor="lineFilter" className="text-lg font-medium">
             Filter by Line:
@@ -107,7 +121,7 @@ const DutyUpdate = () => {
       {/* Error Message */}
       {error && <p className="text-red-400 text-center mb-4">{error}</p>}
 
-      {/* User Table or No Data */}
+      {/* User Table */}
       {filteredData.length > 0 ? (
         <UserTable
           data={filteredData}
@@ -132,3 +146,4 @@ const DutyUpdate = () => {
 };
 
 export default DutyUpdate;
+

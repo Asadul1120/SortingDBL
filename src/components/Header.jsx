@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import LOGO from "../assets/DblLogo.png";
 
 const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -21,9 +22,13 @@ const Header = () => {
   const renderLinks = (isMobile = false) => (
     <>
       <li>
-        <span className="text-sm text-blue-300 italic">
+        <Link className="text-sm text-blue-300 italic"
+        to="/admin"
+        onClick={isMobile ? toggleMobileMenu : undefined}
+        >
           👤 {auth.user?.role}
-        </span>
+        
+        </Link>
       </li>
       <li>
         <Link
@@ -106,7 +111,9 @@ const Header = () => {
   return (
     <header className="fixed top-0 left-0 w-full bg-gray-800 text-white shadow z-50 py-6">
       <div className="container mx-auto flex items-center justify-between px-6">
-        <h1 className="text-xl md:text-2xl font-bold">LOGO</h1>
+
+        {/* Logo */}  
+        <img src={LOGO} className="w-15 rounded-full" alt="logo" />
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-6">

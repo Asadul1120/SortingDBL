@@ -10,11 +10,9 @@ function Employers() {
   // role bace work
   const { auth } = useAuth();
   const { user } = auth;
- 
-  
 
   useEffect(() => {
-    fetch("https://dblsorting.onrender.com/employers")
+    fetch(`${import.meta.env.VITE_BASE_URL}/employers`)
       .then((response) => response.json())
       .then((data) => {
         const sortedData = data.sort((a, b) => a.ID - b.ID);
@@ -29,7 +27,7 @@ function Employers() {
     );
     if (!confirmDelete) return;
 
-    fetch(`https://dblsorting.onrender.com/employers/${id}`, {
+    fetch(`${import.meta.env.VITE_BASE_URL}/employers/${id}`, {
       method: "DELETE",
     })
       .then((response) => response.json())
@@ -38,7 +36,6 @@ function Employers() {
       })
       .catch((error) => console.error(error));
   };
-  
 
   const handleEditClick = (employer) => {
     setEditingId(employer._id);
@@ -51,7 +48,7 @@ function Employers() {
   };
 
   const handleSave = () => {
-    fetch(`https://dblsorting.onrender.com/employers/${editingId}`, {
+    fetch(`${import.meta.env.VITE_BASE_URL}/employers/${editingId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editedData),
@@ -80,7 +77,7 @@ function Employers() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 pt-20">
+    <div className="min-h-screen bg-gray-900 text-white p-4 pt-40">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-center mb-8">All Employers</h1>
 
@@ -109,16 +106,18 @@ function Employers() {
               >
                 {editingId === employer._id ? (
                   <>
-                    {["name", "ID", "phone", "line", "group"].map((field) => (
-                      <input
-                        key={field}
-                        name={field}
-                        value={editedData[field]}
-                        onChange={handleChange}
-                        placeholder={`Enter ${field}`}
-                        className="bg-gray-700 text-white p-2 rounded mb-2 w-full border border-gray-600 focus:ring-2 focus:ring-blue-500"
-                      />
-                    ))}
+                    {["name", "ID", "phone", "line", "Designation"].map(
+                      (field) => (
+                        <input
+                          key={field}
+                          name={field}
+                          value={editedData[field]}
+                          onChange={handleChange}
+                          placeholder={`Enter ${field}`}
+                          className="bg-gray-700 text-white p-2 rounded mb-2 w-full border border-gray-600 focus:ring-2 focus:ring-blue-500"
+                        />
+                      )
+                    )}
                     <div className="mt-2 flex gap-2">
                       <button
                         onClick={handleSave}
@@ -150,8 +149,8 @@ function Employers() {
                       <span className="font-medium">Line:</span> {employer.line}
                     </p>
                     <p className="text-gray-300 mb-4">
-                      <span className="font-medium">Group:</span>{" "}
-                      {employer.group}
+                      <span className="font-medium"> Designation:</span>{" "}
+                      {employer.Designation}
                     </p>
                     <div className="mt-auto flex gap-2 flex-wrap">
                       <Link
