@@ -26,7 +26,6 @@ function HomePage() {
         setUsers(Array.isArray(data.data) ? data.data : []);
       })
       .catch((err) => {
-        console.error("API fetch error:", err);
         setUsers([]);
       });
   }, []);
@@ -214,7 +213,8 @@ function HomePage() {
     );
   };
 
-  const countByRole = (role) => users.filter((u) => u.role === role).length;
+  const countByRole = (role) =>
+    users.filter((u) => u.Designation === role).length;
   const totalCount = users.length;
   const sorterCount = countByRole("Sorter");
   const helperCount = countByRole("Helper");
@@ -224,7 +224,8 @@ function HomePage() {
   return (
     <div className="bg-gray-900 min-h-screen text-white">
       <div className="max-w-6xl mx-auto px-4 py-10 pt-30">
-        <h1 className="text-3xl font-bold mb-4">Today Live Duty List</h1>
+        <h1 className="text-4xl text-center font-bold pt-10 mb-6">Sorting & Packing</h1>
+        <h2 className="text-3xl font-bold mb-4">Today Live Duty List</h2>
 
         <div className="flex justify-between text-lg font-medium mb-6">
           <p>🕒 Time: {currentTime.toLocaleTimeString()}</p>

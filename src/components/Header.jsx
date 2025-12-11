@@ -50,11 +50,11 @@ const Header = () => {
       </li>
       <li>
         <Link
-          to="/schedule"
+          to="/shiftChange"
           onClick={isMobile ? toggleMobileMenu : undefined}
           className="hover:text-blue-400"
         >
-          Schedule
+          ShiftChange
         </Link>
       </li>
 

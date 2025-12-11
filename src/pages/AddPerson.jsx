@@ -98,9 +98,9 @@ export default function AddPerson() {
             id="designation"
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <option value="helper">Helper</option>
-            <option value="sorter">Sorter</option>
-            <option value="operator">Operator</option>
+            <option value="Helper">Helper</option>
+            <option value="Sorter">Sorter</option>
+            <option value="Operator">Operator</option>
           </select>
         </div>
 

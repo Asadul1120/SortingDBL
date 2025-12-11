@@ -65,6 +65,9 @@ function Details() {
     ots.push(dutyData?.OT?.toString() || "-");
   }
 
+  const OT = ots.filter((ot) => !isNaN(ot)).reduce((a, b) => a + Number(b), 0);
+  const OverTime = OT < 10 ? `0${OT}` : OT;
+
   return (
     <div className="min-h-screen bg-gray-900 text-white p-6 pt-30">
       <div className="max-w-4xl mx-auto bg-gray-800 rounded-2xl p-6 shadow-md">
@@ -120,6 +123,9 @@ function Details() {
               </tr>
             </tbody>
           </table>
+          <p className="mt-4 w-full mb-3 font-semibold">
+            Total OT : {OverTime}
+          </p>
         </div>
 
         <div className="mt-6">

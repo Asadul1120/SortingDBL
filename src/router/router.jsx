@@ -11,6 +11,7 @@ import Login from "../pages/Login";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UsersPage from "../pages/UsersPage";
+import ShiftChange from "../pages/ShiftChange";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: "/employers",
         element: <Employers />,
+      },
+      {
+        path: "/shiftChange",
+        element: <ShiftChange />,
       },
       {
         path: "/employers/:id",
