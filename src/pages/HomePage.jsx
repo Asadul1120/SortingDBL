@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
 import TableComponent from "../components/TableComponent";
 
 function HomePage() {
@@ -45,167 +46,368 @@ function HomePage() {
     return `${day}-${month}-${year}`;
   };
 
-  const handleDownload = () => {
-    if (users.length === 0) {
+  const userFilter = users.filter((user) => user.OT > 0);
+  console.log(userFilter);
+
+  // const handleDownload = () => {
+  //   if (userFilter.length === 0) {
+  //     alert("No data to download.");
+  //     return;
+  //   }
+
+  //   const wb = XLSX.utils.book_new();
+
+  //   const wsData = [
+  //     [],
+  //     [],
+  //     [],
+  //     ["", "", "", "", "", "", "      DBL CERAMICS LTD", ""],
+  //     ["", "", "", "", "", "", "   A Concern Of DBL Group  "],
+  //     ["", "", "", "", "", "", " Dhanua (Nayanpur),Sreepur,Gazipur"],
+  //     ["", "", "", "", "", "", "Pre-Approval For Over Time (O.T)"],
+  //     [],
+  //     [
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "Date :",
+  //       getFormattedDate(currentTime),
+  //     ],
+  //     [
+  //       "",
+  //       "",
+  //       "Department : ",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "Section :- Sorting & packing",
+  //     ],
+  //     [
+  //       "S.L No  ",
+  //       " Name",
+  //       "ID-No ",
+  //       "Designation",
+  //       " Date Of OT",
+  //       "Roster Duty",
+  //       "",
+  //       "  Requisted OT Hours ",
+  //       "",
+  //       "",
+  //       "Reason for requested OT",
+  //     ],
+  //     [
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       " Shift ",
+  //       " Duty Hours ",
+  //       "   From  ",
+  //       " To  ",
+  //       " Total Hrs ",
+  //     ],
+  //   ];
+
+  //   // Add employee data rows
+  //   userFilter.forEach((user, index) => {
+  //     wsData.push([
+  //       index + 1,
+  //       user.name,
+  //       user.ID,
+  //       user.Designation || "",
+  //       getFormattedDate(currentTime),
+  //       user.shift || "",
+  //       user.hours || "",
+  //       user.form || "",
+  //       user.to || "",
+  //       user.OT || "",
+  //        "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //       user.shift || "",
+  //       "",
+  //       "",
+  //       "",
+  //       "",
+  //     ]);
+  //   });
+
+  //   // Add 20 blank rows at the end
+  //   for (let i = 0; i < 20; i++) wsData.push([]);
+
+  //   // Create worksheet
+  //   const ws = XLSX.utils.aoa_to_sheet(wsData);
+
+  //   // ✅ Set column widths
+  //   ws["!cols"] = [
+  //     { wch: 8 }, // S.L No
+  //     { wch: 15 }, // Name
+  //     { wch: 15 }, // ID-No
+  //     { wch: 15 }, // Designation
+  //     { wch: 15 }, // Date Of OT
+  //     { wch: 12 }, // Shift
+  //     { wch: 15 }, // Duty Hours
+  //     { wch: 10 }, // From
+  //     { wch: 10 }, // To
+  //     { wch: 12 }, // Total Hrs
+  //     { wch: 30 }, // Reason
+  //   ];
+
+  //   // ✅ Set row heights (especially for header rows 11 & 12 → index 11 & 12)
+  //   const totalRows = wsData.length;
+  //   ws["!rows"] = Array(totalRows).fill({ hpt: 20 }); // default height
+
+  //   ws["!rows"][8] = { hpt: 30 };
+  //   ws["!rows"][9] = { hpt: 30 }; // header row 1
+  //   ws["!rows"][10] = { hpt: 30 }; // header row 2
+
+  //   // ✅ Apply styles (center align & bold header)
+  //   const range = XLSX.utils.decode_range(ws["!ref"]);
+  //   for (let R = range.s.r; R <= range.e.r; ++R) {
+  //     for (let C = range.s.c; C <= range.e.c; ++C) {
+  //       const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
+  //       const cell = ws[cellRef];
+  //       if (cell && cell.v !== undefined) {
+  //         if (!cell.s) cell.s = {};
+  //         cell.s.alignment = {
+  //           vertical: "center",
+  //           horizontal: "center",
+  //           wrapText: true,
+  //         };
+  //         if (R === 13 || R === 14) {
+  //           cell.s.font = { bold: true };
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   // ✅ Add worksheet to workbook and export
+  //   XLSX.utils.book_append_sheet(wb, ws, "OT-Sorting Packing");
+
+  //   XLSX.writeFile(
+  //     wb,
+  //     `OT_sorting_packing_${getFormattedDate(currentTime).replace(
+  //       /-/g,
+  //       "."
+  //     )}.xlsx`
+  //   );
+  // };
+
+  const handleDownload = async () => {
+    if (userFilter.length === 0) {
       alert("No data to download.");
       return;
     }
 
-    const wb = XLSX.utils.book_new();
+    const workbook = new ExcelJS.Workbook();
+    const sheet = workbook.addWorksheet("OT-Sorting Packing");
 
-    const wsData = [
-      [],
-      [],
-      [],
-      ["", "", "", "", "", "", "      DBL CERAMICS LTD", ""],
-      ["", "", "", "", "", "", "   A Concern Of DBL Group  "],
-      ["", "", "", "", "", "", " Dhanua (Nayanpur),Sreepur,Gazipur"],
-      ["", "", "", "", "", "", "Pre-Approval For Over Time (O.T)"],
-      [],
-      [
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "Date :",
-        getFormattedDate(currentTime),
-      ],
-      [
-        "",
-        "",
-        "Department : ",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "Section :- Sorting & packing",
-      ],
-      [
-        "S.L No  ",
-        " Name",
-        "ID-No ",
-        "Designation",
-        " Date Of OT",
-        "Roster Duty",
-        "",
-        "  Requisted OT Hours ",
-        "",
-        "",
-        "Reason for requested OT",
-      ],
-      [
-        "",
-        "",
-        "",
-        "",
-        "",
-        " Shift ",
-        " Duty Hours ",
-        "   From  ",
-        " To  ",
-        " Total Hrs ",
-      ],
-    ];
+    // -------------------------------
+    // Company Header Rows
+    // -------------------------------
+    sheet.addRow([]);
+    sheet.addRow([]);
+    sheet.addRow([]);
 
-    // Add employee data rows
-    users.forEach((user, index) => {
-      wsData.push([
+    const header1 = sheet.addRow(["", "", "", "", "", "", "DBL CERAMICS LTD"]);
+    const header2 = sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "A Concern Of DBL Group",
+    ]);
+    const header3 = sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Dhanua (Nayanpur),Sreepur,Gazipur",
+    ]);
+    const header4 = sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Pre-Approval For Over Time (O.T)",
+    ]);
+
+    [header1, header2, header3, header4].forEach((row) => {
+      row.height = 25;
+      sheet.mergeCells(row.number, 7, row.number, 11); // merge company name cells
+      row.font = { bold: true, size: 16 };
+      row.alignment = { vertical: "middle", horizontal: "center" };
+    });
+
+    sheet.addRow([]);
+    sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Date :",
+      getFormattedDate(currentTime),
+    ]);
+    const header5 = sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Department : ",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Section :- Sorting & packing",
+    ]);
+
+    header5.font = { bold: true, size: 16 };
+    header5.alignment = { vertical: "middle", horizontal: "center" };
+
+    // -------------------------------
+    // Table Header Rows
+    // -------------------------------
+    const tableHeader1 = sheet.addRow([
+      "S.L No",
+      "Name",
+      "ID-No",
+      "Designation",
+      "Date Of OT",
+      "Roster Duty",
+      "",
+      "Requested OT Hours",
+      "",
+      "",
+      "Reason for requested OT",
+    ]);
+    const tableHeader2 = sheet.addRow([
+      "",
+      "",
+      "",
+      "",
+      "",
+      "Shift",
+      "Duty Hours",
+      "From",
+      "To",
+      "Total Hrs",
+      "",
+    ]);
+
+    [tableHeader1, tableHeader2].forEach((row) => {
+      row.font = { bold: true, size: 14 };
+      row.alignment = {
+        vertical: "middle",
+        horizontal: "center",
+        wrapText: true,
+      };
+      row.fill = {
+        type: "pattern",
+        pattern: "solid",
+        fgColor: { argb: "FFD9D9D9" }, // light gray
+      };
+    });
+
+    // -------------------------------
+    // Employee Data
+    // -------------------------------
+    userFilter.forEach((user, index) => {
+      const row = sheet.addRow([
         index + 1,
         user.name,
         user.ID,
-        user.designation || "",
+        user.Designation || "",
         getFormattedDate(currentTime),
         user.shift || "",
-        "",
-        "",
-        "",
+        user.hours || "",
+        user.form || "",
+        user.to || "",
         user.OT || "",
         "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        user.shift || "",
-        "",
-        "",
-        "",
-        "",
       ]);
+      row.alignment = { vertical: "middle", horizontal: "center" };
     });
 
-    // Add 20 blank rows at the end
-    for (let i = 0; i < 20; i++) wsData.push([]);
+    // -------------------------------
+    // Add 20 blank rows
+    // -------------------------------
+    for (let i = 0; i < 20; i++) sheet.addRow([]);
 
-    // Create worksheet
-    const ws = XLSX.utils.aoa_to_sheet(wsData);
+    // -------------------------------
+    // Column Widths Auto
+    // -------------------------------
+    sheet.columns.forEach((column) => {
+      let maxLength = 0;
+      column.eachCell({ includeEmpty: true }, (cell) => {
+        const cellValue = cell.value ? cell.value.toString() : "";
+        if (cellValue.length > maxLength) maxLength = cellValue.length;
+      });
+      column.width = maxLength < 10 ? 10 : maxLength + 2;
+    });
 
-    // ✅ Set column widths
-    ws["!cols"] = [
-      { wch: 8 }, // S.L No
-      { wch: 15 }, // Name
-      { wch: 15 }, // ID-No
-      { wch: 15 }, // Designation
-      { wch: 15 }, // Date Of OT
-      { wch: 12 }, // Shift
-      { wch: 15 }, // Duty Hours
-      { wch: 10 }, // From
-      { wch: 10 }, // To
-      { wch: 12 }, // Total Hrs
-      { wch: 30 }, // Reason
-    ];
+    // -------------------------------
+    // Logo Insert (Optional)
+    // -------------------------------
+    /*
+  const logoBase64 = "PASTE_YOUR_BASE64_HERE";
+  const imageId = workbook.addImage({
+    base64: logoBase64,
+    extension: "png",
+  });
+  sheet.addImage(imageId, {
+    tl: { col: 0, row: 0 },
+    br: { col: 3, row: 3 },
+    editAs: "oneCell",
+  });
+  */
 
-    // ✅ Set row heights (especially for header rows 11 & 12 → index 11 & 12)
-    const totalRows = wsData.length;
-    ws["!rows"] = Array(totalRows).fill({ hpt: 20 }); // default height
-
-    ws["!rows"][8] = { hpt: 30 };
-    ws["!rows"][9] = { hpt: 30 }; // header row 1
-    ws["!rows"][10] = { hpt: 30 }; // header row 2
-
-    // ✅ Apply styles (center align & bold header)
-    const range = XLSX.utils.decode_range(ws["!ref"]);
-    for (let R = range.s.r; R <= range.e.r; ++R) {
-      for (let C = range.s.c; C <= range.e.c; ++C) {
-        const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-        const cell = ws[cellRef];
-        if (cell && cell.v !== undefined) {
-          if (!cell.s) cell.s = {};
-          cell.s.alignment = {
-            vertical: "center",
-            horizontal: "center",
-            wrapText: true,
-          };
-          if (R === 13 || R === 14) {
-            cell.s.font = { bold: true };
-          }
-        }
-      }
-    }
-
-    // ✅ Add worksheet to workbook and export
-    XLSX.utils.book_append_sheet(wb, ws, "OT-Sorting Packing");
-
-    XLSX.writeFile(
-      wb,
+    // -------------------------------
+    // Export Excel File
+    // -------------------------------
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(
+      new Blob([buffer]),
       `OT_sorting_packing_${getFormattedDate(currentTime).replace(
         /-/g,
         "."
@@ -224,7 +426,9 @@ function HomePage() {
   return (
     <div className="bg-gray-900 min-h-screen text-white">
       <div className="max-w-6xl mx-auto px-4 py-10 pt-30">
-        <h1 className="text-4xl text-center font-bold pt-10 mb-6">Sorting & Packing</h1>
+        <h1 className="text-4xl text-center font-bold pt-10 mb-6">
+          Sorting & Packing
+        </h1>
         <h2 className="text-3xl font-bold mb-4">Today Live Duty List</h2>
 
         <div className="flex justify-between text-lg font-medium mb-6">

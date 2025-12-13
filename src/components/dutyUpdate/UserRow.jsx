@@ -20,7 +20,7 @@ const UserRow = ({
           value={shiftValue || ""}
           onChange={(e) => onInputChange(user._id, "shift", e.target.value)}
         >
-          {["None", "A/B","B/C","G", "N", "D", "A", "B", "C"].map((shift) => (
+          {["None", "A/B", "B/C", "G", "N", "D", "A", "B", "C"].map((shift) => (
             <option key={shift} value={shift}>
               {shift}
             </option>
@@ -44,7 +44,7 @@ const UserRow = ({
       <td className="p-2 text-center">
         <button
           onClick={() => onAddClick(user._id)}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded shadow text-sm transition"
+          className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded shadow text-sm transition "
         >
           Add
         </button>

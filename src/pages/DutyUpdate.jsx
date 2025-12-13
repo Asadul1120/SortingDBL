@@ -1,6 +1,3 @@
-
-
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserTable from "../components/dutyUpdate/UserTable";
@@ -52,6 +49,11 @@ const DutyUpdate = () => {
     updater((prev) => ({ ...prev, [userId]: value }));
   };
 
+
+  const handlUpdateClick = (userId) => {
+      
+    
+  };
   const handleAddClick = async (userId) => {
     // ❗ Prevent: Must select a shift
     if (!shiftValues[userId]) {
@@ -109,12 +111,30 @@ const DutyUpdate = () => {
             onChange={(e) => handleSearch(e.target.value)}
           >
             <option value="none">ALL</option>
-            {["1/2", 3, "5/6", 7, 8, 9].map((line) => (
+            {["1/2", 3, "5/6", 7, 8, 9, "OP", "ME"].map((line) => (
               <option key={line} value={line.toString()}>
-                Line {line}
+                {line}
               </option>
             ))}
           </select>
+        </div>
+        <div>
+          <input
+            type="search"
+            placeholder="Search by Name or ID"
+            onChange={(e) =>
+              setFilteredData(
+                data.filter(
+                  (user) =>
+                    user.name
+                      .toLowerCase()
+                      .includes(e.target.value.toLowerCase()) ||
+                    user.ID.toLowerCase().includes(e.target.value.toLowerCase())
+                )
+              )
+            }
+            className="px-3 py-1 border border-gray-600 rounded bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
         </div>
       </div>
 
@@ -146,4 +166,3 @@ const DutyUpdate = () => {
 };
 
 export default DutyUpdate;
-

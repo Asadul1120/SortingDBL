@@ -13,11 +13,14 @@ export default function AddPerson() {
     };
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/employers`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BASE_URL}/employers`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        }
+      );
 
       if (!response.ok) {
         const err = await response.json();
@@ -51,13 +54,16 @@ export default function AddPerson() {
             id="line"
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
+            <option value="none">Select Line</option>
+            <option value="1">Line 1</option>
             <option value="1/2">Line 1/2</option>
             <option value="3">Line 3</option>
             <option value="5/6">Line 5/6</option>
             <option value="7">Line 7</option>
             <option value="8">Line 8</option>
             <option value="9">Line 9</option>
-            <option value="operator">Operator</option>
+            <option value="OP">Operator</option>
+            <option value="ME">Mechanic</option>
           </select>
         </div>
 
@@ -69,6 +75,7 @@ export default function AddPerson() {
             type="text"
             name="name"
             id="name"
+            placeholder="Enter name"
             required
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
@@ -83,6 +90,7 @@ export default function AddPerson() {
             name="ID"
             id="ID"
             required
+            placeholder="551855"
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
@@ -101,6 +109,7 @@ export default function AddPerson() {
             <option value="Helper">Helper</option>
             <option value="Sorter">Sorter</option>
             <option value="Operator">Operator</option>
+            <option value="Mechanic">Mechanic</option>
           </select>
         </div>
 
@@ -112,7 +121,7 @@ export default function AddPerson() {
             type="text"
             name="phone"
             id="phone"
-            defaultValue="+880"
+            placeholder="+088123456789"
             className="w-full bg-gray-700 text-white border border-gray-600 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>

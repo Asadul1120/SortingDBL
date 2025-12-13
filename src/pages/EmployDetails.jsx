@@ -21,7 +21,7 @@ function Details() {
       </div>
     );
   }
-
+ console.log(employer);
   // ✅ বর্তমান তারিখ
   const today = new Date();
   const currentYear = today.getFullYear();
