@@ -49,11 +49,7 @@ const DutyUpdate = () => {
     updater((prev) => ({ ...prev, [userId]: value }));
   };
 
-
-  const handlUpdateClick = (userId) => {
-      
-    
-  };
+  const handlUpdateClick = (userId) => {};
   const handleAddClick = async (userId) => {
     // ❗ Prevent: Must select a shift
     if (!shiftValues[userId]) {

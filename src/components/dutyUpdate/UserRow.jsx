@@ -9,7 +9,7 @@ const UserRow = ({
   return (
     <tr className="hover:bg-gray-700 transition duration-200">
       <td className="p-1 text-sm">{index + 1}</td>
-      <td className="p-1 text-sm capitalize">{user.name}</td>
+      <td className="p-1 text-sm capitalize w-30">{user.name}</td>
       <td className="p-1 text-sm">{user.ID}</td>
       <td className="p-1 text-sm">{user.line}</td>
 
@@ -54,3 +54,6 @@ const UserRow = ({
 };
 
 export default UserRow;
+
+
+

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import TableComponent from "../components/TableComponent";
-
+import logo from "../assets/DblLogo.png";
 function HomePage() {
   const [users, setUsers] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -49,78 +49,131 @@ function HomePage() {
   const userFilter = users.filter((user) => user.OT > 0);
   console.log(userFilter);
 
-  // const handleDownload = () => {
+  //  const handleDownload = async () => {
   //   if (userFilter.length === 0) {
-  //     alert("No data to download.");
+  //     alert("No data to download");
   //     return;
   //   }
 
-  //   const wb = XLSX.utils.book_new();
+  //   const wb = new ExcelJS.Workbook();
+  //   const ws = wb.addWorksheet("OT-Sorting Packing");
 
-  //   const wsData = [
-  //     [],
-  //     [],
-  //     [],
-  //     ["", "", "", "", "", "", "      DBL CERAMICS LTD", ""],
-  //     ["", "", "", "", "", "", "   A Concern Of DBL Group  "],
-  //     ["", "", "", "", "", "", " Dhanua (Nayanpur),Sreepur,Gazipur"],
-  //     ["", "", "", "", "", "", "Pre-Approval For Over Time (O.T)"],
-  //     [],
-  //     [
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "Date :",
-  //       getFormattedDate(currentTime),
-  //     ],
-  //     [
-  //       "",
-  //       "",
-  //       "Department : ",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "Section :- Sorting & packing",
-  //     ],
-  //     [
-  //       "S.L No  ",
-  //       " Name",
-  //       "ID-No ",
-  //       "Designation",
-  //       " Date Of OT",
-  //       "Roster Duty",
-  //       "",
-  //       "  Requisted OT Hours ",
-  //       "",
-  //       "",
-  //       "Reason for requested OT",
-  //     ],
-  //     [
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       " Shift ",
-  //       " Duty Hours ",
-  //       "   From  ",
-  //       " To  ",
-  //       " Total Hrs ",
-  //     ],
+  //   const TOTAL_COL = 11;
+
+  //   // ================= EMPTY ROWS =================
+  //   ws.addRow([]);
+  //   ws.addRow([]);
+  //   ws.addRow([]);
+
+  //   // ================= COMPANY HEADER =================
+  //   const companyRows = [
+  //     "DBL CERAMICS LTD",
+  //     "A Concern Of DBL Group",
+  //     "Dhanua (Nayanpur), Sreepur, Gazipur",
+  //     "Pre-Approval For Over Time (O.T)",
   //   ];
 
-  //   // Add employee data rows
+  //   companyRows.forEach((text, i) => {
+  //     const row = ws.addRow([text]);
+  //     ws.mergeCells(row.number, 1, row.number, TOTAL_COL);
+  //     row.height = i === 0 ? 40 : 28;
+  //     row.font = {
+  //       name: "Century Gothic",
+  //       size: i === 0 ? 26 : 16,
+  //       bold: true,
+  //       color: { argb: "FF000000" },
+  //     };
+  //     row.alignment = { vertical: "middle", horizontal: "center" };
+  //   });
+
+  //   ws.addRow([]);
+
+  //   // ================= INFO ROW =================
+  //   const infoRow = ws.addRow([
+  //     "Department :",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "Section :- Sorting & packing",
+  //     "",
+  //     "",
+  //     `Date : ${getFormattedDate(currentTime)}`,
+  //   ]);
+
+  //   ws.mergeCells(`A${infoRow.number}:B${infoRow.number}`);
+  //   ws.mergeCells(`H${infoRow.number}:J${infoRow.number}`);
+
+  //   infoRow.height = 30;
+  //   infoRow.eachCell((cell) => {
+  //     if (cell.value) {
+  //       cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+  //       cell.alignment = { vertical: "middle", horizontal: "center" };
+  //     }
+  //   });
+
+  //   // ================= TABLE HEADER =================
+  //   const header1 = ws.addRow([
+  //     "S.L No",
+  //     "Name",
+  //     "ID-No",
+  //     "Designation",
+  //     "Date Of OT",
+  //     "Roster Duty",
+  //     "",
+  //     "Requested OT Hours",
+  //     "",
+  //     "",
+  //     "Reason for requested OT",
+  //   ]);
+
+  //   const header2 = ws.addRow([
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "",
+  //     "Shift",
+  //     "Duty Hours",
+  //     "From",
+  //     "To",
+  //     "Total Hrs",
+  //     "",
+  //   ]);
+
+  //   ws.mergeCells(`F${header1.number}:G${header1.number}`);
+  //   ws.mergeCells(`H${header1.number}:J${header1.number}`);
+
+  //   ws.mergeCells(`A${header1.number}:A${header2.number}`);
+  //   ws.mergeCells(`B${header1.number}:B${header2.number}`);
+  //   ws.mergeCells(`C${header1.number}:C${header2.number}`);
+  //   ws.mergeCells(`D${header1.number}:D${header2.number}`);
+  //   ws.mergeCells(`E${header1.number}:E${header2.number}`);
+  //   ws.mergeCells(`K${header1.number}:K${header2.number}`);
+
+  //   [header1, header2].forEach((row) => {
+  //     row.height = 32;
+  //     row.eachCell((cell) => {
+  //       cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+  //       cell.alignment = {
+  //         vertical: "middle",
+  //         horizontal: "center",
+  //         wrapText: true,
+  //       };
+  //       cell.border = {
+  //         top: { style: "thin", color: { argb: "FF000000" } },
+  //         bottom: { style: "thin", color: { argb: "FF000000" } },
+  //         left: { style: "thin", color: { argb: "FF000000" } },
+  //         right: { style: "thin", color: { argb: "FF000000" } },
+  //       };
+  //     });
+  //   });
+
+  //   // ================= DATA ROWS =================
   //   userFilter.forEach((user, index) => {
-  //     wsData.push([
+  //     const row = ws.addRow([
   //       index + 1,
   //       user.name,
   //       user.ID,
@@ -131,168 +184,93 @@ function HomePage() {
   //       user.form || "",
   //       user.to || "",
   //       user.OT || "",
-  //        "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       "",
-  //       user.shift || "",
-  //       "",
-  //       "",
-  //       "",
   //       "",
   //     ]);
+
+  //     row.height = 25;
+
+  //     row.eachCell((cell, col) => {
+  //       if (col === 2 || col === 3) {
+  //         cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+  //       } else {
+  //         cell.font = { size: 12, color: { argb: "FF000000" } };
+  //       }
+
+  //       cell.alignment = { vertical: "middle", horizontal: "center" };
+  //       cell.border = {
+  //         top: { style: "thin", color: { argb: "FF000000" } },
+  //         bottom: { style: "thin", color: { argb: "FF000000" } },
+  //         left: { style: "thin", color: { argb: "FF000000" } },
+  //         right: { style: "thin", color: { argb: "FF000000" } },
+  //       };
+  //     });
   //   });
 
-  //   // Add 20 blank rows at the end
-  //   for (let i = 0; i < 20; i++) wsData.push([]);
-
-  //   // Create worksheet
-  //   const ws = XLSX.utils.aoa_to_sheet(wsData);
-
-  //   // ✅ Set column widths
-  //   ws["!cols"] = [
-  //     { wch: 8 }, // S.L No
-  //     { wch: 15 }, // Name
-  //     { wch: 15 }, // ID-No
-  //     { wch: 15 }, // Designation
-  //     { wch: 15 }, // Date Of OT
-  //     { wch: 12 }, // Shift
-  //     { wch: 15 }, // Duty Hours
-  //     { wch: 10 }, // From
-  //     { wch: 10 }, // To
-  //     { wch: 12 }, // Total Hrs
-  //     { wch: 30 }, // Reason
+  //   // ================= COLUMN WIDTH =================
+  //   ws.columns = [
+  //     { width: 6 },
+  //     { width: 20 },
+  //     { width: 15 },
+  //     { width: 18 },
+  //     { width: 16 },
+  //     { width: 12 },
+  //     { width: 14 },
+  //     { width: 12 },
+  //     { width: 12 },
+  //     { width: 12 },
+  //     { width: 32 },
   //   ];
 
-  //   // ✅ Set row heights (especially for header rows 11 & 12 → index 11 & 12)
-  //   const totalRows = wsData.length;
-  //   ws["!rows"] = Array(totalRows).fill({ hpt: 20 }); // default height
-
-  //   ws["!rows"][8] = { hpt: 30 };
-  //   ws["!rows"][9] = { hpt: 30 }; // header row 1
-  //   ws["!rows"][10] = { hpt: 30 }; // header row 2
-
-  //   // ✅ Apply styles (center align & bold header)
-  //   const range = XLSX.utils.decode_range(ws["!ref"]);
-  //   for (let R = range.s.r; R <= range.e.r; ++R) {
-  //     for (let C = range.s.c; C <= range.e.c; ++C) {
-  //       const cellRef = XLSX.utils.encode_cell({ r: R, c: C });
-  //       const cell = ws[cellRef];
-  //       if (cell && cell.v !== undefined) {
-  //         if (!cell.s) cell.s = {};
-  //         cell.s.alignment = {
-  //           vertical: "center",
-  //           horizontal: "center",
-  //           wrapText: true,
-  //         };
-  //         if (R === 13 || R === 14) {
-  //           cell.s.font = { bold: true };
-  //         }
-  //       }
-  //     }
-  //   }
-
-  //   // ✅ Add worksheet to workbook and export
-  //   XLSX.utils.book_append_sheet(wb, ws, "OT-Sorting Packing");
-
-  //   XLSX.writeFile(
-  //     wb,
-  //     `OT_sorting_packing_${getFormattedDate(currentTime).replace(
-  //       /-/g,
-  //       "."
-  //     )}.xlsx`
+  //   // ================= SAVE FILE =================
+  //   const buffer = await wb.xlsx.writeBuffer();
+  //   saveAs(
+  //     new Blob([buffer]),
+  //     `OT_sorting_packing_${getFormattedDate(currentTime).replace(/-/g, ".")}.xlsx`
   //   );
   // };
 
   const handleDownload = async () => {
     if (userFilter.length === 0) {
-      alert("No data to download.");
+      alert("No data to download");
       return;
     }
 
-    const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet("OT-Sorting Packing");
+    const wb = new ExcelJS.Workbook();
+    const ws = wb.addWorksheet("OT-Sorting Packing");
 
-    // -------------------------------
-    // Company Header Rows
-    // -------------------------------
-    sheet.addRow([]);
-    sheet.addRow([]);
-    sheet.addRow([]);
+    const TOTAL_COL = 11;
 
-    const header1 = sheet.addRow(["", "", "", "", "", "", "DBL CERAMICS LTD"]);
-    const header2 = sheet.addRow([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "A Concern Of DBL Group",
-    ]);
-    const header3 = sheet.addRow([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "Dhanua (Nayanpur),Sreepur,Gazipur",
-    ]);
-    const header4 = sheet.addRow([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "Pre-Approval For Over Time (O.T)",
-    ]);
+    // ================= EMPTY ROWS =================
+    ws.addRow([]);
+    ws.addRow([]);
+    ws.addRow([]);
 
-    [header1, header2, header3, header4].forEach((row) => {
-      row.height = 25;
-      sheet.mergeCells(row.number, 7, row.number, 11); // merge company name cells
-      row.font = { bold: true, size: 16 };
+    // ================= COMPANY HEADER =================
+    const companyRows = [
+      { text: "DBL CERAMICS LTD", size: 26 },
+      { text: "A Concern Of DBL Group", size: 14 }, // 🔹 smaller
+      { text: "Dhanua (Nayanpur), Sreepur, Gazipur", size: 13 }, // 🔹 smaller
+      { text: "Pre-Approval For Over Time (O.T)", size: 16 },
+    ];
+
+    companyRows.forEach((item, i) => {
+      const row = ws.addRow([item.text]);
+      ws.mergeCells(row.number, 1, row.number, TOTAL_COL);
+      row.height = i === 0 ? 40 : 26;
+      row.font = {
+        name: "Century Gothic",
+        size: item.size,
+        bold: true,
+        color: { argb: "FF000000" },
+      };
       row.alignment = { vertical: "middle", horizontal: "center" };
     });
 
-    sheet.addRow([]);
-    sheet.addRow([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "Date :",
-      getFormattedDate(currentTime),
-    ]);
-    const header5 = sheet.addRow([
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "",
-      "Department : ",
+    ws.addRow([]);
+
+    // ================= INFO ROW =================
+    const infoRow = ws.addRow([
+      "Department :",
       "",
       "",
       "",
@@ -300,15 +278,24 @@ function HomePage() {
       "",
       "",
       "Section :- Sorting & packing",
+      "",
+      "",
+      `Date : ${getFormattedDate(currentTime)}`,
     ]);
 
-    header5.font = { bold: true, size: 16 };
-    header5.alignment = { vertical: "middle", horizontal: "center" };
+    ws.mergeCells(`A${infoRow.number}:B${infoRow.number}`);
+    ws.mergeCells(`H${infoRow.number}:J${infoRow.number}`);
 
-    // -------------------------------
-    // Table Header Rows
-    // -------------------------------
-    const tableHeader1 = sheet.addRow([
+    infoRow.height = 30;
+    infoRow.eachCell((cell) => {
+      if (cell.value) {
+        cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+      }
+    });
+
+    // ================= TABLE HEADER =================
+    const header1 = ws.addRow([
       "S.L No",
       "Name",
       "ID-No",
@@ -321,7 +308,8 @@ function HomePage() {
       "",
       "Reason for requested OT",
     ]);
-    const tableHeader2 = sheet.addRow([
+
+    const header2 = ws.addRow([
       "",
       "",
       "",
@@ -335,25 +323,37 @@ function HomePage() {
       "",
     ]);
 
-    [tableHeader1, tableHeader2].forEach((row) => {
-      row.font = { bold: true, size: 14 };
-      row.alignment = {
-        vertical: "middle",
-        horizontal: "center",
-        wrapText: true,
-      };
-      row.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFD9D9D9" }, // light gray
-      };
+    ws.mergeCells(`F${header1.number}:G${header1.number}`);
+    ws.mergeCells(`H${header1.number}:J${header1.number}`);
+
+    ws.mergeCells(`A${header1.number}:A${header2.number}`);
+    ws.mergeCells(`B${header1.number}:B${header2.number}`);
+    ws.mergeCells(`C${header1.number}:C${header2.number}`);
+    ws.mergeCells(`D${header1.number}:D${header2.number}`);
+    ws.mergeCells(`E${header1.number}:E${header2.number}`);
+    ws.mergeCells(`K${header1.number}:K${header2.number}`);
+
+    [header1, header2].forEach((row) => {
+      row.height = 32;
+      row.eachCell((cell) => {
+        cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+        cell.alignment = {
+          vertical: "middle",
+          horizontal: "center",
+          wrapText: true,
+        };
+        cell.border = {
+          top: { style: "thin", color: { argb: "FF000000" } },
+          bottom: { style: "thin", color: { argb: "FF000000" } },
+          left: { style: "thin", color: { argb: "FF000000" } },
+          right: { style: "thin", color: { argb: "FF000000" } },
+        };
+      });
     });
 
-    // -------------------------------
-    // Employee Data
-    // -------------------------------
+    // ================= DATA ROWS =================
     userFilter.forEach((user, index) => {
-      const row = sheet.addRow([
+      const row = ws.addRow([
         index + 1,
         user.name,
         user.ID,
@@ -366,46 +366,45 @@ function HomePage() {
         user.OT || "",
         "",
       ]);
-      row.alignment = { vertical: "middle", horizontal: "center" };
-    });
 
-    // -------------------------------
-    // Add 20 blank rows
-    // -------------------------------
-    for (let i = 0; i < 20; i++) sheet.addRow([]);
+      row.height = 25;
 
-    // -------------------------------
-    // Column Widths Auto
-    // -------------------------------
-    sheet.columns.forEach((column) => {
-      let maxLength = 0;
-      column.eachCell({ includeEmpty: true }, (cell) => {
-        const cellValue = cell.value ? cell.value.toString() : "";
-        if (cellValue.length > maxLength) maxLength = cellValue.length;
+      row.eachCell((cell, col) => {
+        // 🔹 S.L No (A), Name (B), ID-No (C) → BIG & BOLD
+        if (col === 1 || col === 2 || col === 3) {
+          cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+        } else {
+          cell.font = { size: 12, color: { argb: "FF000000" } };
+        }
+
+        cell.alignment = { vertical: "middle", horizontal: "center" };
+        cell.border = {
+          top: { style: "thin", color: { argb: "FF000000" } },
+          bottom: { style: "thin", color: { argb: "FF000000" } },
+          left: { style: "thin", color: { argb: "FF000000" } },
+          right: { style: "thin", color: { argb: "FF000000" } },
+        };
       });
-      column.width = maxLength < 10 ? 10 : maxLength + 2;
     });
 
-    // -------------------------------
-    // Logo Insert (Optional)
-    // -------------------------------
-    /*
-  const logoBase64 = "PASTE_YOUR_BASE64_HERE";
-  const imageId = workbook.addImage({
-    base64: logoBase64,
-    extension: "png",
-  });
-  sheet.addImage(imageId, {
-    tl: { col: 0, row: 0 },
-    br: { col: 3, row: 3 },
-    editAs: "oneCell",
-  });
-  */
+    // ================= COLUMN WIDTH =================
+    ws.columns = [
+      { width: 7 },
+      { width: 20 },
+      { width: 15 },
+      { width: 18 },
+      { width: 16 },
+      { width: 12 },
+      { width: 16 },
+      { width: 12 },
+      { width: 12 },
+      { width: 12 },
+      { width: 32 },
+    ];
 
-    // -------------------------------
-    // Export Excel File
-    // -------------------------------
-    const buffer = await workbook.xlsx.writeBuffer();
+  
+    // ================= SAVE FILE =================
+    const buffer = await wb.xlsx.writeBuffer();
     saveAs(
       new Blob([buffer]),
       `OT_sorting_packing_${getFormattedDate(currentTime).replace(
