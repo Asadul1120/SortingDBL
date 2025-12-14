@@ -12,6 +12,7 @@ import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UsersPage from "../pages/UsersPage";
 import ShiftChange from "../pages/ShiftChange";
+import ChangeDuty from "../pages/ChangeDuty";
 
 const router = createBrowserRouter([
   {
@@ -37,6 +38,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <UsersPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "/ChangeDuty",
+        element: (
+          <AdminRoute>
+            <ChangeDuty />
           </AdminRoute>
         ),
       },

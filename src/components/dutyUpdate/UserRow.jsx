@@ -5,7 +5,7 @@ const UserRow = ({
   otValue,
   onInputChange,
   onAddClick,
-  onUpdateClick,
+
 }) => {
   return (
     <tr className="hover:bg-gray-700 transition duration-200">

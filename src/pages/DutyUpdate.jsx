@@ -86,34 +86,6 @@ const DutyUpdate = () => {
   };
 
 
-  const updateDuty = async (userId) => {
-    const payload = {
-      employeeID: userId, // ✔ Correct field name
-      date: formattedDate,
-      shift: shiftValues[userId], // ✔ No invalid "None"
-      OT: otValues[userId] || 0,
-    };
-
-    try {
-      const res = await fetch(`${import.meta.env.VITE_BASE_URL}/today/update${userId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      const result = await res.json();
-
-      if (!res.ok) {
-        alert("❌ " + result.message);
-        return;
-      }
-
-      alert("✅ Duty updated successfully!");
-    } catch (error) {
-      console.error(error);
-      alert("❌ Failed to update duty");
-    }
-  };
 
   const handleSearch = (line) => {
     setFilteredData(
@@ -175,7 +147,7 @@ const DutyUpdate = () => {
           otValues={otValues}
           onInputChange={handleInputChange}
           onAddClick={handleAddClick}
-          onUpdateClick={updateDuty}
+         
           
         />
       ) : (

@@ -3,6 +3,7 @@ import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import TableComponent from "../components/TableComponent";
 import Logo from "../assets/Logo.json";
+import { Link } from "react-router-dom";
 function HomePage() {
   const [users, setUsers] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -23,7 +24,6 @@ function HomePage() {
         return res.json();
       })
       .then((data) => {
-        console.log("Fetched data:", data);
         setUsers(Array.isArray(data.data) ? data.data : []);
       })
       .catch((err) => {
@@ -327,12 +327,21 @@ function HomePage() {
           </p>
         )}
 
-        <button
-          onClick={handleDownload}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6"
-        >
-          Download xlsx
-        </button>
+        <div className="flex justify-between">
+          <button
+            onClick={handleDownload}
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6"
+          >
+            Download xlsx
+          </button>
+
+          <Link
+            to="/ChangeDuty"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-6 ml-4"
+          >
+            Edit duty update
+          </Link>
+        </div>
       </div>
     </div>
   );
