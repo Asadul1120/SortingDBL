@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import TableComponent from "../components/TableComponent";
-import logo from "../assets/DblLogo.png";
+import Logo from "../assets/Logo.json";
 function HomePage() {
   const [users, setUsers] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -47,187 +47,10 @@ function HomePage() {
   };
 
   const userFilter = users.filter((user) => user.OT > 0);
-  console.log(userFilter);
 
-  //  const handleDownload = async () => {
-  //   if (userFilter.length === 0) {
-  //     alert("No data to download");
-  //     return;
-  //   }
-
-  //   const wb = new ExcelJS.Workbook();
-  //   const ws = wb.addWorksheet("OT-Sorting Packing");
-
-  //   const TOTAL_COL = 11;
-
-  //   // ================= EMPTY ROWS =================
-  //   ws.addRow([]);
-  //   ws.addRow([]);
-  //   ws.addRow([]);
-
-  //   // ================= COMPANY HEADER =================
-  //   const companyRows = [
-  //     "DBL CERAMICS LTD",
-  //     "A Concern Of DBL Group",
-  //     "Dhanua (Nayanpur), Sreepur, Gazipur",
-  //     "Pre-Approval For Over Time (O.T)",
-  //   ];
-
-  //   companyRows.forEach((text, i) => {
-  //     const row = ws.addRow([text]);
-  //     ws.mergeCells(row.number, 1, row.number, TOTAL_COL);
-  //     row.height = i === 0 ? 40 : 28;
-  //     row.font = {
-  //       name: "Century Gothic",
-  //       size: i === 0 ? 26 : 16,
-  //       bold: true,
-  //       color: { argb: "FF000000" },
-  //     };
-  //     row.alignment = { vertical: "middle", horizontal: "center" };
-  //   });
-
-  //   ws.addRow([]);
-
-  //   // ================= INFO ROW =================
-  //   const infoRow = ws.addRow([
-  //     "Department :",
-  //     "",
-  //     "",
-  //     "",
-  //     "",
-  //     "",
-  //     "",
-  //     "Section :- Sorting & packing",
-  //     "",
-  //     "",
-  //     `Date : ${getFormattedDate(currentTime)}`,
-  //   ]);
-
-  //   ws.mergeCells(`A${infoRow.number}:B${infoRow.number}`);
-  //   ws.mergeCells(`H${infoRow.number}:J${infoRow.number}`);
-
-  //   infoRow.height = 30;
-  //   infoRow.eachCell((cell) => {
-  //     if (cell.value) {
-  //       cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
-  //       cell.alignment = { vertical: "middle", horizontal: "center" };
-  //     }
-  //   });
-
-  //   // ================= TABLE HEADER =================
-  //   const header1 = ws.addRow([
-  //     "S.L No",
-  //     "Name",
-  //     "ID-No",
-  //     "Designation",
-  //     "Date Of OT",
-  //     "Roster Duty",
-  //     "",
-  //     "Requested OT Hours",
-  //     "",
-  //     "",
-  //     "Reason for requested OT",
-  //   ]);
-
-  //   const header2 = ws.addRow([
-  //     "",
-  //     "",
-  //     "",
-  //     "",
-  //     "",
-  //     "Shift",
-  //     "Duty Hours",
-  //     "From",
-  //     "To",
-  //     "Total Hrs",
-  //     "",
-  //   ]);
-
-  //   ws.mergeCells(`F${header1.number}:G${header1.number}`);
-  //   ws.mergeCells(`H${header1.number}:J${header1.number}`);
-
-  //   ws.mergeCells(`A${header1.number}:A${header2.number}`);
-  //   ws.mergeCells(`B${header1.number}:B${header2.number}`);
-  //   ws.mergeCells(`C${header1.number}:C${header2.number}`);
-  //   ws.mergeCells(`D${header1.number}:D${header2.number}`);
-  //   ws.mergeCells(`E${header1.number}:E${header2.number}`);
-  //   ws.mergeCells(`K${header1.number}:K${header2.number}`);
-
-  //   [header1, header2].forEach((row) => {
-  //     row.height = 32;
-  //     row.eachCell((cell) => {
-  //       cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
-  //       cell.alignment = {
-  //         vertical: "middle",
-  //         horizontal: "center",
-  //         wrapText: true,
-  //       };
-  //       cell.border = {
-  //         top: { style: "thin", color: { argb: "FF000000" } },
-  //         bottom: { style: "thin", color: { argb: "FF000000" } },
-  //         left: { style: "thin", color: { argb: "FF000000" } },
-  //         right: { style: "thin", color: { argb: "FF000000" } },
-  //       };
-  //     });
-  //   });
-
-  //   // ================= DATA ROWS =================
-  //   userFilter.forEach((user, index) => {
-  //     const row = ws.addRow([
-  //       index + 1,
-  //       user.name,
-  //       user.ID,
-  //       user.Designation || "",
-  //       getFormattedDate(currentTime),
-  //       user.shift || "",
-  //       user.hours || "",
-  //       user.form || "",
-  //       user.to || "",
-  //       user.OT || "",
-  //       "",
-  //     ]);
-
-  //     row.height = 25;
-
-  //     row.eachCell((cell, col) => {
-  //       if (col === 2 || col === 3) {
-  //         cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
-  //       } else {
-  //         cell.font = { size: 12, color: { argb: "FF000000" } };
-  //       }
-
-  //       cell.alignment = { vertical: "middle", horizontal: "center" };
-  //       cell.border = {
-  //         top: { style: "thin", color: { argb: "FF000000" } },
-  //         bottom: { style: "thin", color: { argb: "FF000000" } },
-  //         left: { style: "thin", color: { argb: "FF000000" } },
-  //         right: { style: "thin", color: { argb: "FF000000" } },
-  //       };
-  //     });
-  //   });
-
-  //   // ================= COLUMN WIDTH =================
-  //   ws.columns = [
-  //     { width: 6 },
-  //     { width: 20 },
-  //     { width: 15 },
-  //     { width: 18 },
-  //     { width: 16 },
-  //     { width: 12 },
-  //     { width: 14 },
-  //     { width: 12 },
-  //     { width: 12 },
-  //     { width: 12 },
-  //     { width: 32 },
-  //   ];
-
-  //   // ================= SAVE FILE =================
-  //   const buffer = await wb.xlsx.writeBuffer();
-  //   saveAs(
-  //     new Blob([buffer]),
-  //     `OT_sorting_packing_${getFormattedDate(currentTime).replace(/-/g, ".")}.xlsx`
-  //   );
-  // };
+  // 📦 Excel Download Img Logo
+  const Img = Logo.image;
+  const base64Logo = Img.data;
 
   const handleDownload = async () => {
     if (userFilter.length === 0) {
@@ -242,21 +65,19 @@ function HomePage() {
 
     // ================= EMPTY ROWS =================
     ws.addRow([]);
-    ws.addRow([]);
-    ws.addRow([]);
 
     // ================= COMPANY HEADER =================
     const companyRows = [
-      { text: "DBL CERAMICS LTD", size: 26 },
-      { text: "A Concern Of DBL Group", size: 14 }, // 🔹 smaller
-      { text: "Dhanua (Nayanpur), Sreepur, Gazipur", size: 13 }, // 🔹 smaller
-      { text: "Pre-Approval For Over Time (O.T)", size: 16 },
+      { text: "DBL CERAMICS LTD", size: 15 },
+      { text: "A Concern Of DBL Group", size: 9 }, // 🔹 smaller
+      { text: "Dhanua (Nayanpur), Sreepur, Gazipur", size: 9 }, // 🔹 smaller
+      { text: "Pre-Approval For Over Time (O.T)", size: 13 },
     ];
 
     companyRows.forEach((item, i) => {
       const row = ws.addRow([item.text]);
       ws.mergeCells(row.number, 1, row.number, TOTAL_COL);
-      row.height = i === 0 ? 40 : 26;
+      row.height = i === 0 ? 20 : 15;
       row.font = {
         name: "Century Gothic",
         size: item.size,
@@ -266,6 +87,7 @@ function HomePage() {
       row.alignment = { vertical: "middle", horizontal: "center" };
     });
 
+    ws.addRow([]);
     ws.addRow([]);
 
     // ================= INFO ROW =================
@@ -286,10 +108,10 @@ function HomePage() {
     ws.mergeCells(`A${infoRow.number}:B${infoRow.number}`);
     ws.mergeCells(`H${infoRow.number}:J${infoRow.number}`);
 
-    infoRow.height = 30;
+    infoRow.height = 26;
     infoRow.eachCell((cell) => {
       if (cell.value) {
-        cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+        cell.font = { bold: true, size: 13, color: { argb: "FF000000" } };
         cell.alignment = { vertical: "middle", horizontal: "center" };
       }
     });
@@ -334,9 +156,9 @@ function HomePage() {
     ws.mergeCells(`K${header1.number}:K${header2.number}`);
 
     [header1, header2].forEach((row) => {
-      row.height = 32;
+      row.height = 25;
       row.eachCell((cell) => {
-        cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+        cell.font = { bold: true, size: 13, color: { argb: "FF000000" } };
         cell.alignment = {
           vertical: "middle",
           horizontal: "center",
@@ -372,7 +194,7 @@ function HomePage() {
       row.eachCell((cell, col) => {
         // 🔹 S.L No (A), Name (B), ID-No (C) → BIG & BOLD
         if (col === 1 || col === 2 || col === 3) {
-          cell.font = { bold: true, size: 14, color: { argb: "FF000000" } };
+          cell.font = { bold: true, size: 13, color: { argb: "FF000000" } };
         } else {
           cell.font = { size: 12, color: { argb: "FF000000" } };
         }
@@ -390,19 +212,33 @@ function HomePage() {
     // ================= COLUMN WIDTH =================
     ws.columns = [
       { width: 7 },
+      { width: 35 },
+      { width: 25 },
+      { width: 26 },
       { width: 20 },
-      { width: 15 },
+      { width: 16 },
       { width: 18 },
-      { width: 16 },
-      { width: 12 },
-      { width: 16 },
-      { width: 12 },
-      { width: 12 },
-      { width: 12 },
-      { width: 32 },
+      { width: 15 },
+      { width: 15 },
+      { width: 15 },
+      { width: 54 },
     ];
 
-  
+    // ================= LOGO IMAGE =================
+
+    const logoImageId = wb.addImage({
+      base64: base64Logo,
+      extension: "png",
+    });
+    ws.addImage(logoImageId, {
+      tl: { col: 0, row: 1 }, // center position
+      ext: { width: 105, height: 80 }, // logo size
+    });
+    ws.addRow([]);
+    ws.addRow([]);
+    ws.addRow([]);
+    ws.addRow([]);
+
     // ================= SAVE FILE =================
     const buffer = await wb.xlsx.writeBuffer();
     saveAs(
@@ -428,6 +264,7 @@ function HomePage() {
         <h1 className="text-4xl text-center font-bold pt-10 mb-6">
           Sorting & Packing
         </h1>
+
         <h2 className="text-3xl font-bold mb-4">Today Live Duty List</h2>
 
         <div className="flex justify-between text-lg font-medium mb-6">

@@ -6,6 +6,7 @@ const UserTable = ({
   otValues,
   onInputChange,
   onAddClick,
+  onUpdateClick,
 }) => {
   const sorting = [...data].sort((a, b) => a.line.localeCompare(b.line));
 
@@ -40,6 +41,7 @@ const UserTable = ({
                   otValue={otValues[user._id]}
                   onInputChange={onInputChange}
                   onAddClick={onAddClick}
+                  onUpdateClick={onUpdateClick}
                 />
               ))}
             </tbody>

@@ -5,6 +5,7 @@ const UserRow = ({
   otValue,
   onInputChange,
   onAddClick,
+  onUpdateClick,
 }) => {
   return (
     <tr className="hover:bg-gray-700 transition duration-200">
@@ -20,7 +21,24 @@ const UserRow = ({
           value={shiftValue || ""}
           onChange={(e) => onInputChange(user._id, "shift", e.target.value)}
         >
-          {["None", "A/B", "B/C", "G", "N", "D", "A", "B", "C"].map((shift) => (
+          {[
+            "Select",
+            "A",
+            "B",
+            "C",
+            "D",
+            "N",
+            "G",
+            "AC",
+            "AB",
+            "BC",
+            "D/O-D",
+            "D/O-N",
+            "D/O-A",
+            "D/O-B",
+            "D/O-C",
+            "D/O-G",
+          ].map((shift) => (
             <option key={shift} value={shift}>
               {shift}
             </option>
@@ -48,12 +66,15 @@ const UserRow = ({
         >
           Add
         </button>
+        {/* <button
+          className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded shadow text-sm transition ml-2"
+          onClick={() => onUpdateClick(user._id)}
+        >
+          Update
+        </button> */}
       </td>
     </tr>
   );
 };
 
 export default UserRow;
-
-
-
