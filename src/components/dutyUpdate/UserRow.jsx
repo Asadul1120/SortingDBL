@@ -38,6 +38,9 @@ const UserRow = ({
             "D/O-B",
             "D/O-C",
             "D/O-G",
+            "D/O-AC",
+            "D/O-AB",
+            "D/O-BC",
           ].map((shift) => (
             <option key={shift} value={shift}>
               {shift}

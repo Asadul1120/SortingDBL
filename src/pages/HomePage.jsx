@@ -36,6 +36,8 @@ function HomePage() {
     const hour = dateObj.getHours();
     const correctedDate = new Date(dateObj);
 
+  
+
     if (hour < 6) {
       correctedDate.setDate(correctedDate.getDate() - 1);
     }

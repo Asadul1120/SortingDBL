@@ -183,9 +183,13 @@ const ChangeDuty = () => {
     { value: "BC", color: "bg-yellow-300", label: "BC" },
     { value: "D/O-D", color: "bg-purple-300", label: "D/O-D" },
     { value: "D/O-N", color: "bg-red-300", label: "D/O-N" },
-    { value: "D/O-A", color: "bg-blue-200", label: "D/O A" },
-    { value: "D/O-B", color: "bg-green-200", label: "D/O B" },
-    { value: "D/O-C", color: "bg-yellow-200", label: "D/O C" },
+    { value: "D/O-A", color: "bg-blue-200", label: "D/O-A" },
+    { value: "D/O-B", color: "bg-green-200", label: "D/O-B" },
+    { value: "D/O-C", color: "bg-yellow-200", label: "D/O-C" },
+    { value: "D/O-AB", color: "bg-yellow-200", label: "D/O-AB" },
+    { value: "D/O-BC", color: "bg-yellow-200", label: "D/O-BC" },
+    { value: "D/O-AC", color: "bg-yellow-200", label: "D/O-AC" },
+
     { value: "D/O-G", color: "bg-gray-300", label: "D/O-G" },
   ];
 
