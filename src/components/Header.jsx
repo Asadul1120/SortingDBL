@@ -201,8 +201,8 @@ const Header = () => {
   );
 
   return (
-    <header className="fixed top-0 left-0 w-full bg-gray-900/95 backdrop-blur-sm border-b border-gray-800/50 shadow-2xl z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <header className="fixed top-0 left-0  w-full bg-gray-900/95 backdrop-blur-sm border-b border-gray-800/50 shadow-2xl z-50 ">
+      <div className="max-w-7xl  py-4 mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           {/* Logo & Brand */}
           <div className="flex items-center gap-4">
@@ -226,8 +226,8 @@ const Header = () => {
                 />
               </div>
               <div className="">
-                <h1 className="text-lg font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  DBL Sorting & Packing
+                <h1 className="text-sm font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                   Sorting & Packing
                 </h1>
                 <p className="text-xs text-gray-400">Management System</p>
               </div>
@@ -241,13 +241,7 @@ const Header = () => {
           <div className="flex items-center gap-3">
             {auth?.token ? (
               <>
-                {/* Notifications */}
-                <button className="relative p-2 rounded-lg bg-gray-800/50 hover:bg-gray-700/50 transition-colors">
-                  <Bell className="w-5 h-5 text-gray-400" />
-                  {/* <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                    3
-                  </span> */}
-                </button>
+               
 
                 {/* User Menu */}
                 {renderUserMenu()}
@@ -301,7 +295,7 @@ const Header = () => {
       </div>
 
       {/* Active Page Indicator */}
-      <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-50" />
+      <div className="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 opacity-50 " />
     </header>
   );
 };
