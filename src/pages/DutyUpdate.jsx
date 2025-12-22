@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import UserTable from "../components/dutyUpdate/UserTable";
+import { toast } from "react-toastify";
 
 const DutyUpdate = () => {
   const [data, setData] = useState([]);
@@ -36,7 +37,6 @@ const DutyUpdate = () => {
         setData(result);
         setFilteredData(result);
       } catch (error) {
-        console.error(error);
         setError(error.message);
       }
     };
@@ -49,11 +49,10 @@ const DutyUpdate = () => {
     updater((prev) => ({ ...prev, [userId]: value }));
   };
 
- 
   const handleAddClick = async (userId) => {
     // ❗ Prevent: Must select a shift
     if (!shiftValues[userId]) {
-      alert("⚠ Please select a shift before adding duty!");
+      toast.warn("⚠ Please select a shift before adding duty!");
       return;
     }
 
@@ -74,18 +73,16 @@ const DutyUpdate = () => {
       const result = await res.json();
 
       if (!res.ok) {
-        alert("❌ " + result.message);
+        toast.error("❌ " + result.message);
         return;
       }
 
-      alert("✅ Duty added successfully!");
+      toast.success("✅ Duty added successfully!");
     } catch (error) {
       console.error(error);
-      alert("❌ Failed to add duty");
+      toast.error("❌ Failed to add duty");
     }
   };
-
-
 
   const handleSearch = (line) => {
     setFilteredData(
@@ -147,8 +144,6 @@ const DutyUpdate = () => {
           otValues={otValues}
           onInputChange={handleInputChange}
           onAddClick={handleAddClick}
-         
-          
         />
       ) : (
         <div className="text-center mt-20">

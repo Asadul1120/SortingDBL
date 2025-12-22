@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function SignUp() {
   const [formData, setFormData] = useState({
@@ -41,11 +42,12 @@ function SignUp() {
       })
         .then((response) => response.json())
         .then((data) => {
-          alert(data.message);
+          toast.success(data.message || "✅ Registration successful!");
           navigate("/login");
         })
         .catch((error) => {
           console.error("Error:", error);
+          toast.error("❌ Registration failed. Please try again.");
         });
 
       setFormData({

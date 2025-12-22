@@ -69,12 +69,7 @@ const UserRow = ({
         >
           Add
         </button>
-        {/* <button
-          className="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded shadow text-sm transition ml-2"
-          onClick={() => onUpdateClick(user._id)}
-        >
-          Update
-        </button> */}
+     
       </td>
     </tr>
   );

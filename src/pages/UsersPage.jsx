@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function UsersPage() {
   const [users, setUsers] = useState([]);
@@ -23,17 +24,48 @@ export default function UsersPage() {
     });
 
     loadUsers();
+    toast.success(`✅ User role updated to ${newRole}!`);
   };
 
   // Delete user
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure to delete this user?")) return;
+    toast.info(
+      <div>
+        <p>Are you sure to delete this user?</p>
+        <div className="flex gap-2 mt-3">
+          <button
+            onClick={() => {
+              toast.dismiss();
+              deleteUser(id);
+            }}
+            className="bg-red-600 hover:bg-red-700 text-white py-1 px-4 rounded text-sm"
+          >
+            Delete
+          </button>
+          <button
+            onClick={() => toast.dismiss()}
+            className="bg-gray-600 hover:bg-gray-700 text-white py-1 px-4 rounded text-sm"
+          >
+            Cancel
+          </button>
+        </div>
+      </div>,
+      {
+        position: "top-center",
+        autoClose: false,
+        closeOnClick: false,
+        draggable: false,
+      }
+    );
+  };
 
+  const deleteUser = async (id) => {
     await fetch(`${import.meta.env.VITE_BASE_URL}/users/${id}`, {
       method: "DELETE",
     });
 
     loadUsers();
+    toast.success("✅ User deleted successfully!");
   };
 
   return (

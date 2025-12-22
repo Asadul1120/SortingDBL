@@ -1,11 +1,7 @@
-
 import { useState } from "react";
-import { useNavigate , Link} from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext.jsx";
-
-
-
-
+import { toast } from "react-toastify";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -49,24 +45,24 @@ function Login() {
         const data = await response.json();
 
         if (response.ok && data.token) {
-          alert("Login successful!");
-          // console.log(data);
+          toast.success("✅ Login successful!");
           localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user)); // optional
+          localStorage.setItem("user", JSON.stringify(data.user));
           setAuth({ user: data.user, token: data.token });
           navigate("/");
         } else {
           setErrors({ general: data.message || "Login failed" });
+          toast.error(data.message || "❌ Login failed");
         }
       } catch (error) {
         console.error("Error:", error);
         setErrors({ general: "Something went wrong. Try again later." });
+        toast.error("❌ Something went wrong. Try again later.");
       } finally {
         setLoading(false);
       }
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 pt-33 px-4">

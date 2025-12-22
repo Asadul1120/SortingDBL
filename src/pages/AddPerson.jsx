@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export default function AddPerson() {
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -27,11 +29,11 @@ export default function AddPerson() {
         throw new Error(err.message || "Failed to add employee");
       }
 
-      alert("✅ Employee added successfully!");
+      toast.success("✅ Employee added successfully!");
       event.target.reset();
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      toast.error(error.message);
     }
   };
 
