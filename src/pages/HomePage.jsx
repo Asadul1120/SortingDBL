@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
@@ -372,7 +371,7 @@ function HomePage() {
             </h1>
           </div>
           <p className="text-gray-400 text-sm sm:text-lg">
-            Daily Attendance  Dashboard
+            Daily Attendance Dashboard
           </p>
         </div>
 
