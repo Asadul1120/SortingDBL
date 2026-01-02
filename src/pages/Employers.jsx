@@ -1,241 +1,3 @@
-// import { useState, useEffect } from "react";
-// import { Link } from "react-router-dom";
-// import { useAuth } from "../AuthContext";
-// import { toast } from "react-toastify";
-
-// function Employers() {
-//   const [employers, setEmployers] = useState([]);
-//   const [editingId, setEditingId] = useState(null);
-//   const [editedData, setEditedData] = useState({});
-//   const [searchId, setSearchId] = useState("");
-//   // role bace work
-//   const { auth } = useAuth();
-//   const { user } = auth;
-
-//   useEffect(() => {
-//     fetch(`${import.meta.env.VITE_BASE_URL}/employers`)
-//       .then((response) => response.json())
-//       .then((data) => {
-//         const sortedData = data.sort((a, b) => a.ID - b.ID);
-//         setEmployers(sortedData);
-//       })
-//       .catch((error) => console.error(error));
-//   }, []);
-
-//   const handleDelete = (id) => {
-//     toast.info(
-//       <div>
-//         <p>Are you sure you want to delete this employer?</p>
-//         <div className="flex gap-2 mt-3">
-//           <button
-//             onClick={() => {
-//               toast.dismiss();
-//               deleteEmployer(id);
-//             }}
-//             className="bg-red-600 hover:bg-red-700 text-white py-1 px-4 rounded text-sm"
-//           >
-//             Delete
-//           </button>
-//           <button
-//             onClick={() => toast.dismiss()}
-//             className="bg-gray-600 hover:bg-gray-700 text-white py-1 px-4 rounded text-sm"
-//           >
-//             Cancel
-//           </button>
-//         </div>
-//       </div>,
-//       {
-//         position: "top-center",
-//         autoClose: false,
-//         closeOnClick: false,
-//         draggable: false,
-//       }
-//     );
-//   };
-
-//   const deleteEmployer = (id) => {
-//     fetch(`${import.meta.env.VITE_BASE_URL}/employers/${id}`, {
-//       method: "DELETE",
-//     })
-//       .then((response) => response.json())
-//       .then(() => {
-//         setEmployers(employers.filter((employer) => employer._id !== id));
-//         toast.success("✅ Employer deleted successfully!");
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//         toast.error("❌ Failed to delete employer");
-//       });
-//   };
-
-//   const handleEditClick = (employer) => {
-//     setEditingId(employer._id);
-//     setEditedData({ ...employer });
-//   };
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setEditedData({ ...editedData, [name]: value });
-//   };
-
-//   const handleSave = () => {
-//     fetch(`${import.meta.env.VITE_BASE_URL}/employers/${editingId}`, {
-//       method: "PUT",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(editedData),
-//     })
-//       .then((res) => res.json())
-//       .then((updated) => {
-//         const updatedEmployers = employers.map((emp) =>
-//           emp._id === editingId ? updated : emp
-//         );
-//         setEmployers(updatedEmployers);
-//         setEditingId(null);
-//         setEditedData({});
-//         toast.success("✅ Employer updated successfully!");
-//       })
-//       .catch((err) => {
-//         console.error(err);
-//         toast.error("❌ Failed to update employer");
-//       });
-//   };
-
-//   const handleCancel = () => {
-//     setEditingId(null);
-//     setEditedData({});
-//   };
-
-//   const filteredEmployers = employers.filter(
-//     (emp) =>
-//       emp.ID.toString().includes(searchId) ||
-//       emp.name.toLowerCase().includes(searchId.toLowerCase())
-//   );
-
-//   return (
-//     <div className="min-h-screen bg-gray-900 text-white p-4 pt-40">
-//       <div className="max-w-6xl mx-auto">
-//         <h1 className="text-3xl font-bold text-center mb-8">All Employers</h1>
-
-//         <input
-//           type="text"
-//           placeholder="Search by ID or Name"
-//           value={searchId}
-//           onChange={(e) => setSearchId(e.target.value.trim())}
-//           className="bg-gray-700 text-white p-2 rounded mb-6 w-full border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-//         />
-//         <h4 className=" text-gray-400 mb-4 text-xl font-semibold">
-//           {" "}
-//           Total employers: {employers.length}
-//         </h4>
-
-//         {employers.length === 0 ? (
-//           <div className="text-center text-gray-400">
-//             <span className="animate-pulse">Loading employers...</span>
-//           </div>
-//         ) : (
-//           <div className="flex flex-wrap gap-6 justify-center">
-//             {filteredEmployers.map((employer) => (
-//               <div
-//                 key={employer._id}
-//                 className="bg-gray-800 hover:bg-gray-700 transition-all duration-300 rounded-2xl p-6 shadow-md w-full sm:w-[47%] md:w-[30%] flex flex-col"
-//               >
-//                 {editingId === employer._id ? (
-//                   <>
-//                     {["name", "ID", "phone", "line", "Designation"].map(
-//                       (field) => (
-//                         <input
-//                           key={field}
-//                           name={field}
-//                           value={editedData[field]}
-//                           onChange={handleChange}
-//                           placeholder={`Enter ${field}`}
-//                           className="bg-gray-700 text-white p-2 rounded mb-2 w-full border border-gray-600 focus:ring-2 focus:ring-blue-500"
-//                         />
-//                       )
-//                     )}
-//                     <div className="mt-2 flex gap|2">
-//                       <button
-//                         onClick={handleSave}
-//                         className="bg-green-600 hover:bg-green-700 py-2 px-4 rounded font-semibold"
-//                       >
-//                         Save
-//                       </button>
-//                       <button
-//                         onClick={handleCancel}
-//                         className="bg-gray-600 hover:bg-gray-700 py-2 px-4 rounded font-semibold"
-//                       >
-//                         Cancel
-//                       </button>
-//                     </div>
-//                   </>
-//                 ) : (
-//                   <>
-//                     <h2 className="text-xl font-semibold mb-2">
-//                       {employer.name}
-//                     </h2>
-//                     <p className="text-gray-300">
-//                       <span className="font-medium">ID:</span> {employer.ID}
-//                     </p>
-//                     <p className="text-gray-300">
-//                       <span className="font-medium">Phone:</span>{" "}
-//                       {employer.phone}
-//                     </p>
-//                     <p className="text-gray-300">
-//                       <span className="font-medium">Line:</span> {employer.line}
-//                     </p>
-//                     <p className="text-gray-300 mb-4">
-//                       <span className="font-medium"> Designation:</span>{" "}
-//                       {employer.Designation}
-//                     </p>
-//                     <div className="mt-auto flex gap-2 flex-wrap">
-//                       <Link
-//                         to={`/employers/${employer._id}`}
-//                         className="bg-purple-600 hover:bg-purple-700 py-2 px-4 rounded font-medium text-center"
-//                       >
-//                         Details
-//                       </Link>
-//                       {user?.role === "admin" && (
-//                         <>
-//                           <button
-//                             onClick={() => handleEditClick(employer)}
-//                             className="bg-blue-600 hover:bg-blue-700 py-2 px-4 rounded font-medium"
-//                           >
-//                             Edit
-//                           </button>
-//                           <button
-//                             onClick={() => handleDelete(employer._id)}
-//                             className="bg-red-600 hover:bg-red-700 py-2 px-4 rounded font-medium"
-//                           >
-//                             Delete
-//                           </button>
-//                         </>
-//                       )}
-//                     </div>
-//                   </>
-//                 )}
-//               </div>
-//             ))}
-//           </div>
-//         )}
-//       </div>
-//     </div>
-//   );
-// }
-
-// export default Employers;
-
-
-
-
-
-
-
-
-
-
-
-
-
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
@@ -253,7 +15,7 @@ import {
   Hash,
   Briefcase,
   Loader2,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 
 function Employers() {
@@ -291,7 +53,8 @@ function Employers() {
               Delete Employer Confirmation
             </p>
             <p className="text-gray-700 mt-1">
-              Are you sure you want to delete <strong>{name}</strong>? This action cannot be undone.
+              Are you sure you want to delete <strong>{name}</strong>? This
+              action cannot be undone.
             </p>
             <div className="flex gap-2 mt-4">
               <button
@@ -357,9 +120,9 @@ function Employers() {
     setEditedData({ ...employer });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) => { 
     const { name, value } = e.target;
-    setEditedData({ ...editedData, [name]: value });
+    setEditedData({ ...editedData, [name]: value});
   };
 
   const handleSave = () => {
@@ -400,7 +163,7 @@ function Employers() {
     setEditingId(null);
     setEditedData({});
   };
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
   const filteredEmployers = employers.filter(
     (emp) =>
       emp.ID.toString().includes(searchTerm) ||
@@ -417,7 +180,9 @@ function Employers() {
             <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
               All Employers
             </h1>
-            <p className="text-gray-400 mt-1">Manage and view all employer records</p>
+            <p className="text-gray-400 mt-1">
+              Manage and view all employer records
+            </p>
           </div>
 
           <div className="flex items-center gap-3 text-lg font-medium bg-gray-800/50 backdrop-blur-sm px-4 py-2 rounded-xl">
@@ -449,9 +214,13 @@ function Employers() {
         ) : filteredEmployers.length === 0 ? (
           <div className="text-center py-20 bg-gray-800/30 backdrop-blur-sm rounded-2xl border border-gray-700/50">
             <Users className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-medium text-gray-300 mb-2">No employers found</h3>
+            <h3 className="text-xl font-medium text-gray-300 mb-2">
+              No employers found
+            </h3>
             <p className="text-gray-500">
-              {searchTerm ? "Try a different search term" : "No employers in the database"}
+              {searchTerm
+                ? "Try a different search term"
+                : "No employers in the database"}
             </p>
           </div>
         ) : (
@@ -463,13 +232,19 @@ function Employers() {
               >
                 {editingId === employer._id ? (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-semibold text-blue-300 mb-4">Edit Employer</h3>
+                    <h3 className="text-lg font-semibold text-blue-300 mb-4">
+                      Edit Employer
+                    </h3>
                     {[
                       { field: "name", label: "Name", icon: User },
                       { field: "ID", label: "ID", icon: Hash },
                       { field: "phone", label: "Phone", icon: Phone },
                       { field: "line", label: "Line", icon: Hash },
-                      { field: "Designation", label: "Designation", icon: Briefcase },
+                      {
+                        field: "Designation",
+                        label: "Designation",
+                        icon: Briefcase,
+                      },
                     ].map(({ field, label, icon: Icon }) => (
                       <div key={field}>
                         <label className="flex items-center gap-2 text-sm text-gray-400 mb-1">
@@ -553,7 +328,9 @@ function Employers() {
                             Edit
                           </button>
                           <button
-                            onClick={() => handleDelete(employer._id, employer.name)}
+                            onClick={() =>
+                              handleDelete(employer._id, employer.name)
+                            }
                             className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 py-2 px-4 rounded-lg font-medium transition-all hover:scale-[1.02]"
                           >
                             <Trash2 size={18} />
@@ -585,10 +362,3 @@ function Employers() {
 }
 
 export default Employers;
-
-
-
-
-
-
-

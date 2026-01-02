@@ -300,9 +300,11 @@ const ShiftChange = () => {
                 {[
                   "Full Day",
                   "Full Night",
+                  "Morning",
                   "Day",
                   "Night",
                   "General",
+                  "Morning+Night",
                   "Morning+Day",
                   "Day+Night",
                 ].map((s) => (
