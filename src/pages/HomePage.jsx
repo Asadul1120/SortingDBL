@@ -226,7 +226,7 @@ function HomePage() {
           index + 1,
           user.name,
           user.ID,
-          user.Designation || "",
+          "",
           getFormattedDate(currentTime),
           user.shift || "",
           user.hours || "",
